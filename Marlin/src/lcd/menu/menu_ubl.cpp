@@ -182,7 +182,7 @@ void _lcd_ubl_edit_mesh() {
   GCODES_ITEM(MSG_UBL_FINE_TUNE_ALL, F("G29P4RT"));
   GCODES_ITEM(MSG_UBL_FINE_TUNE_CLOSEST, F("G29P4T"));
   SUBMENU(MSG_UBL_MESH_HEIGHT_ADJUST, _menu_ubl_height_adjust);
-  ACTION_ITEM(MSG_INFO_SCREEN, ui.return_to_status);
+  // ACTION_ITEM(MSG_INFO_SCREEN, ui.return_to_status);
   END_MENU();
 }
 
@@ -541,7 +541,7 @@ void _menu_ubl_tools() {
   #if ENABLED(G26_MESH_VALIDATION)
     SUBMENU(MSG_UBL_VALIDATE_MESH_MENU, _lcd_ubl_validate_mesh);
   #endif
-  SUBMENU(MSG_EDIT_MESH, _lcd_ubl_edit_mesh);
+  ACTION_ITEM(MSG_UBL_MESH_EDIT, _ubl_goto_map_screen);
   SUBMENU(MSG_UBL_MESH_LEVELING, _lcd_ubl_mesh_leveling);
   END_MENU();
 }
@@ -635,7 +635,8 @@ void _menu_ubl_tools() {
  */
 void _lcd_ubl_level_bed() {
   START_MENU();
-  BACK_ITEM(MSG_MOTION);
+  BACK_ITEM(MSG_REPAIR);
+  // BACK_ITEM(MSG_MOTION);
   if (planner.leveling_active)
     GCODES_ITEM(MSG_UBL_DEACTIVATE_MESH, F("G29D"));
   else
@@ -650,11 +651,11 @@ void _lcd_ubl_level_bed() {
   #if ENABLED(UBL_MESH_WIZARD)
     SUBMENU(MSG_UBL_MESH_WIZARD, _menu_ubl_mesh_wizard);
   #endif
-  ACTION_ITEM(MSG_UBL_MESH_EDIT, _ubl_goto_map_screen);
+  SUBMENU(MSG_EDIT_MESH, _lcd_ubl_edit_mesh);
   SUBMENU(MSG_UBL_STORAGE_MESH_MENU, _lcd_ubl_storage_mesh);
   SUBMENU(MSG_UBL_OUTPUT_MAP, _lcd_ubl_output_map);
   SUBMENU(MSG_UBL_TOOLS, _menu_ubl_tools);
-  GCODES_ITEM(MSG_UBL_INFO_UBL, F("G29W"));
+  // GCODES_ITEM(MSG_UBL_INFO_UBL, F("G29W"));
   END_MENU();
 }
 

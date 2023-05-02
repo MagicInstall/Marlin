@@ -204,8 +204,8 @@ void _menu_move_distance(const AxisEnum axis, const screenFunc_t func, const int
 #endif
 
 void menu_move() {
-  START_MENU();
-  BACK_ITEM(MSG_MOTION);
+    START_MENU();
+    BACK_ITEM(MSG_MOTION);
 
   #if BOTH(HAS_SOFTWARE_ENDSTOPS, SOFT_ENDSTOPS_MENU_ITEM)
     EDIT_ITEM(bool, MSG_LCD_SOFT_ENDSTOPS, &soft_endstop._enabled);
@@ -338,25 +338,11 @@ void menu_motion() {
   #endif
 
   //
-  // Auto-calibration
+  // Set home offset
   //
-  #if ENABLED(CALIBRATION_GCODE)
-    GCODES_ITEM(MSG_AUTO_CALIBRATE, F("G425"));
-  #endif
-
-  //
-  // Auto Z-Align
-  //
-  #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
-    GCODES_ITEM(MSG_AUTO_Z_ALIGN, F("G34"));
-  #endif
-
-  //
-  // Probe Deploy/Stow
-  //
-  #if ENABLED(PROBE_DEPLOY_STOW_MENU)
-    GCODES_ITEM(MSG_MANUAL_DEPLOY, F("M401"));
-    GCODES_ITEM(MSG_MANUAL_STOW, F("M402"));
+  #if DISABLED(NO_WORKSPACE_OFFSETS)
+    GCODES_ITEM(MSG_SET_HOME_OFFSETS, F("M428\nG0 Z5"));
+    GCODES_ITEM(MSG_Z_TO_ZERO, F("G0 Z0"));
   #endif
 
   //
@@ -367,56 +353,78 @@ void menu_motion() {
     GCODES_ITEM(MSG_MANUAL_PENDOWN, F("M280 P0 S50"));
   #endif
 
-  // Probe Offset Wizard
-  //
-  #if ENABLED(PROBE_OFFSET_WIZARD)
-    SUBMENU(MSG_PROBE_WIZARD, goto_probe_offset_wizard);
-  #endif
+  // //
+  // // Level Bed
+  // //
+  // #if ENABLED(AUTO_BED_LEVELING_UBL)
 
-  //
-  // Assisted Bed Tramming
-  //
-  #if ENABLED(ASSISTED_TRAMMING_WIZARD)
-    SUBMENU(MSG_TRAMMING_WIZARD, goto_tramming_wizard);
-  #endif
+  //   SUBMENU(MSG_UBL_LEVEL_BED, _lcd_ubl_level_bed);
 
-  //
-  // Level Bed
-  //
-  #if ENABLED(AUTO_BED_LEVELING_UBL)
+  // #elif ENABLED(LCD_BED_LEVELING)
 
-    SUBMENU(MSG_UBL_LEVEL_BED, _lcd_ubl_level_bed);
+  //   if (!g29_in_progress)
+  //     SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
 
-  #elif ENABLED(LCD_BED_LEVELING)
+  // #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
 
-    if (!g29_in_progress)
-      SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
+  //   #if DISABLED(PROBE_MANUALLY)
+  //     GCODES_ITEM(MSG_LEVEL_BED, F("G29N"));
+  //   #endif
 
-  #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
+  //   if (all_axes_homed() && leveling_is_valid()) {
+  //     bool show_state = planner.leveling_active;
+  //     EDIT_ITEM(bool, MSG_BED_LEVELING, &show_state, _lcd_toggle_bed_leveling);
+  //   }
 
-    #if DISABLED(PROBE_MANUALLY)
-      GCODES_ITEM(MSG_LEVEL_BED, F("G29N"));
-    #endif
+  //   #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
+  //     editable.decimal = planner.z_fade_height;
+  //     EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });
+  //   #endif
 
-    if (all_axes_homed() && leveling_is_valid()) {
-      bool show_state = planner.leveling_active;
-      EDIT_ITEM(bool, MSG_BED_LEVELING, &show_state, _lcd_toggle_bed_leveling);
-    }
+  // #endif
 
-    #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
-      editable.decimal = planner.z_fade_height;
-      EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });
-    #endif
+  // //
+  // // Assisted Bed Tramming
+  // //
+  // #if ENABLED(ASSISTED_TRAMMING_WIZARD)
+  //   SUBMENU(MSG_TRAMMING_WIZARD, goto_tramming_wizard);
+  // #endif
 
-  #endif
+  // #if ENABLED(LCD_BED_TRAMMING) && DISABLED(LCD_BED_LEVELING)
+  //  SUBMENU(MSG_BED_TRAMMING, _lcd_bed_tramming);
+  // #endif
 
-  #if ENABLED(LCD_BED_TRAMMING) && DISABLED(LCD_BED_LEVELING)
-    SUBMENU(MSG_BED_TRAMMING, _lcd_bed_tramming);
-  #endif
+  // #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
+  //   GCODES_ITEM(MSG_M48_TEST, F("G28O\nM48 P10"));
+  // #endif
 
-  #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
-    GCODES_ITEM(MSG_M48_TEST, F("G28O\nM48 P10"));
-  #endif
+  // //
+  // // Auto Z-Align
+  // //
+  // #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
+  //   GCODES_ITEM(MSG_AUTO_Z_ALIGN, F("G34"));
+  // #endif
+
+  // // Probe Offset Wizard
+  // //
+  // #if ENABLED(PROBE_OFFSET_WIZARD)
+  //   SUBMENU(MSG_PROBE_WIZARD, goto_probe_offset_wizard);
+  // #endif
+
+  // //
+  // // Probe Deploy/Stow
+  // //
+  // #if ENABLED(PROBE_DEPLOY_STOW_MENU)
+  //   GCODES_ITEM(MSG_MANUAL_DEPLOY, F("M401"));
+  //   GCODES_ITEM(MSG_MANUAL_STOW, F("M402"));
+  // #endif
+
+  // //
+  // // Auto-calibration
+  // //
+  // #if ENABLED(CALIBRATION_GCODE)
+  //   GCODES_ITEM(MSG_AUTO_CALIBRATE, F("G425"));
+  // #endif
 
   //
   // Disable Steppers

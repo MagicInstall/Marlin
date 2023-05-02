@@ -31,10 +31,10 @@ namespace Language_zh_CN {
   using namespace Language_en;  // Inherit undefined strings from English
 
   constexpr uint8_t CHARSIZE              = 3;
-  LSTR LANGUAGE                           = _UxGT("Simplified Chinese");
+  LSTR LANGUAGE                           = _UxGT("中国");
 
-  LSTR WELCOME_MSG                        = MACHINE_NAME _UxGT("已就绪.");     // " ready."
-  LSTR MSG_MARLIN                         = _UxGT("马林");
+  LSTR WELCOME_MSG                        = MACHINE_NAME _UxGT(" 已就绪.");     // " ready."
+  // LSTR MSG_MARLIN                         = _UxGT("Marlin");
   LSTR MSG_YES                            = _UxGT("是");
   LSTR MSG_NO                             = _UxGT("否");
   LSTR MSG_BACK                           = _UxGT("返回");     // ”Back“
@@ -46,8 +46,8 @@ namespace Language_zh_CN {
   LSTR MSG_MEDIA_USB_REMOVED              = _UxGT("USB设备已弹出");
   LSTR MSG_MEDIA_USB_FAILED               = _UxGT("USB启动错误");
   LSTR MSG_KILL_SUBCALL_OVERFLOW          = _UxGT("子响应溢出");
-  LSTR MSG_LCD_ENDSTOPS                   = _UxGT("挡块");     // "Endstops" // Max length 8 characters
-  LSTR MSG_LCD_SOFT_ENDSTOPS              = _UxGT("软挡块");
+  LSTR MSG_LCD_ENDSTOPS                   = _UxGT("限位");     // "Endstops" // Max length 8 characters
+  LSTR MSG_LCD_SOFT_ENDSTOPS              = _UxGT("软限位");
   LSTR MSG_MAIN_MENU                      = _UxGT("主菜单");     // "Main"
   LSTR MSG_ADVANCED_SETTINGS              = _UxGT("高级设置");
   LSTR MSG_CONFIGURATION                  = _UxGT("配置");
@@ -55,19 +55,44 @@ namespace Language_zh_CN {
   LSTR MSG_DISABLE_STEPPERS               = _UxGT("关闭步进电机");     // "Disable steppers"
   LSTR MSG_DEBUG_MENU                     = _UxGT("调试菜单");     // "Debug Menu"
   LSTR MSG_PROGRESS_BAR_TEST              = _UxGT("进度条测试");     // "Progress Bar Test"
+  LSTR MSG_ENDSTOP_TEST                   = _UxGT("限位器测试");
+  LSTR MSG_Z_PROBE                        = _UxGT("Z轴探头");
   LSTR MSG_HOMING                         = _UxGT("回原点");
   LSTR MSG_AUTO_HOME                      = _UxGT("自动回原点");     // "Auto home"
-  LSTR MSG_AUTO_HOME_X                    = _UxGT("回X原位");     // "Home X"
-  LSTR MSG_AUTO_HOME_Y                    = _UxGT("回Y原位");     // "Home Y"
-  LSTR MSG_AUTO_HOME_Z                    = _UxGT("回Z原位");     // "Home Z"
-  LSTR MSG_AUTO_Z_ALIGN                   = _UxGT("自动Z对齐");
-  LSTR MSG_LEVEL_BED_HOMING               = _UxGT("平台调平XYZ归原位");     // "Homing XYZ"
+  LSTR MSG_AUTO_HOME_A                    = _UxGT("@回原点");
+  LSTR MSG_AUTO_HOME_X                    = _UxGT("X回原点");     // "Home X"
+  LSTR MSG_AUTO_HOME_Y                    = _UxGT("回Y原点");     // "Home Y"
+  LSTR MSG_AUTO_HOME_Z                    = _UxGT("回Z原点");     // "Home Z"
+  // LSTR MSG_Z_AFTER_HOME                   = _UxGT("Z After Homing");
+  LSTR MSG_FILAMENT_SET                   = _UxGT("耗材设置");
+  LSTR MSG_FILAMENT_MAN                   = _UxGT("耗材管理");
+  LSTR MSG_MANUAL_LEVELING                = _UxGT("手动调平");
+  LSTR MSG_LEVBED_FL                      = _UxGT("左前");
+  LSTR MSG_LEVBED_FR                      = _UxGT("右前");
+  LSTR MSG_LEVBED_C                       = _UxGT("中间");
+  LSTR MSG_LEVBED_BL                      = _UxGT("左后");
+  LSTR MSG_LEVBED_BR                      = _UxGT("右后");
+  // LSTR MSG_MANUAL_MESH                    = _UxGT("Manual Mesh");
+  // LSTR MSG_AUTO_MESH                      = _UxGT("Auto Build Mesh");
+  LSTR MSG_AUTO_Z_ALIGN                   = _UxGT("Z轴自动对齐");
+  LSTR MSG_ITERATION                      = _UxGT("G34 重复: %i");
+  LSTR MSG_DECREASING_ACCURACY            = _UxGT("精度下降!");
+  LSTR MSG_ACCURACY_ACHIEVED              = _UxGT("精度达标");
+  LSTR MSG_LEVEL_BED_HOMING               = _UxGT("平台调平XYZ回原点");     // "Homing XYZ"
   LSTR MSG_LEVEL_BED_WAITING              = _UxGT("单击开始热床调平");     // "Click to Begin"
   LSTR MSG_LEVEL_BED_NEXT_POINT           = _UxGT("下个热床调平点");     // "Next Point"
   LSTR MSG_LEVEL_BED_DONE                 = _UxGT("完成热床调平");     // "Leveling Done!"
   LSTR MSG_Z_FADE_HEIGHT                  = _UxGT("淡出高度");     // "Fade Height"
-  LSTR MSG_SET_HOME_OFFSETS               = _UxGT("设置原点偏移");     // "Set home offsets"
+  LSTR MSG_SET_HOME_OFFSETS               = _UxGT("设置原点偏移");     // "Set home offsets"  
+  LSTR MSG_HOME_OFFSET_X                  = _UxGT("X轴偏移");
+  LSTR MSG_HOME_OFFSET_Y                  = _UxGT("Y轴偏移");
+  LSTR MSG_HOME_OFFSET_Z                  = _UxGT("Z轴偏移");
+  LSTR MSG_Z_TO_ZERO                      = _UxGT("Z轴到零位");
   LSTR MSG_HOME_OFFSETS_APPLIED           = _UxGT("偏移已启用");     // "Offsets applied"
+  // LSTR MSG_ERR_M428_TOO_FAR               = _UxGT("Err: 太远了！");
+  LSTR MSG_TRAMMING_WIZARD                = _UxGT("床角调平");
+  // LSTR MSG_SELECT_ORIGIN                  = _UxGT("Select Origin");
+  // LSTR MSG_LAST_VALUE_SP                  = _UxGT("Last value ");
   #if HAS_PREHEAT
     LSTR MSG_PREHEAT_1                    = _UxGT("预热 ") PREHEAT_1_LABEL;     // "Preheat PREHEAT_2_LABEL"
     LSTR MSG_PREHEAT_1_H                  = _UxGT("预热 ") PREHEAT_1_LABEL " ~";     // "Preheat PREHEAT_2_LABEL"
@@ -76,7 +101,14 @@ namespace Language_zh_CN {
     LSTR MSG_PREHEAT_1_ALL                = _UxGT("预热 ") PREHEAT_1_LABEL _UxGT(" 全部");     //MSG_PREHEAT_1 " All"
     LSTR MSG_PREHEAT_1_BEDONLY            = _UxGT("预热 ") PREHEAT_1_LABEL _UxGT(" 热床");     //MSG_PREHEAT_1 " Bed"
     LSTR MSG_PREHEAT_1_SETTINGS           = _UxGT("预热 ") PREHEAT_1_LABEL _UxGT(" 设置");     //MSG_PREHEAT_1 " conf"
-
+    #ifdef PREHEAT_2_LABEL
+      LSTR MSG_PREHEAT_2                  = _UxGT("预热 ") PREHEAT_2_LABEL;
+      LSTR MSG_PREHEAT_2_SETTINGS         = _UxGT("预热 ") PREHEAT_2_LABEL _UxGT(" 设置");
+    #endif
+    #ifdef PREHEAT_3_LABEL
+      LSTR MSG_PREHEAT_3                  = _UxGT("预热 ") PREHEAT_3_LABEL;
+      LSTR MSG_PREHEAT_3_SETTINGS         = _UxGT("预热 ") PREHEAT_3_LABEL _UxGT(" 设置");
+    #endif
     LSTR MSG_PREHEAT_M                    = _UxGT("预热 $");     // "Preheat PREHEAT_2_LABEL"
     LSTR MSG_PREHEAT_M_H                  = _UxGT("预热 $ ~");     // "Preheat PREHEAT_2_LABEL"
     LSTR MSG_PREHEAT_M_END                = _UxGT("预热 $ 喷嘴");     //MSG_PREHEAT_1 " "
@@ -85,8 +117,10 @@ namespace Language_zh_CN {
     LSTR MSG_PREHEAT_M_BEDONLY            = _UxGT("预热 $ 热床");     //MSG_PREHEAT_1 " Bed"
     LSTR MSG_PREHEAT_M_SETTINGS           = _UxGT("预热 $ 设置");     //MSG_PREHEAT_1 " conf"
   #endif
+  LSTR MSG_PREHEAT_HOTEND                 = _UxGT("预热喷嘴");
   LSTR MSG_PREHEAT_CUSTOM                 = _UxGT("预热自定义");
   LSTR MSG_COOLDOWN                       = _UxGT("降温");     // "Cooldown"
+
   LSTR MSG_CUTTER_FREQUENCY               = _UxGT("切割频率");
   LSTR MSG_LASER_MENU                     = _UxGT("激光控制");
   LSTR MSG_LASER_POWER                    = _UxGT("激光电源");
@@ -98,9 +132,15 @@ namespace Language_zh_CN {
   LSTR MSG_EXTRUDE                        = _UxGT("挤出");     // "Extrude"
   LSTR MSG_RETRACT                        = _UxGT("回抽");     // "Retract"
   LSTR MSG_MOVE_AXIS                      = _UxGT("移动轴");     // "Move axis"
+  LSTR MSG_REPAIR                         = _UxGT("整备");     
   LSTR MSG_BED_LEVELING                   = _UxGT("调平热床");     // "Bed leveling"
   LSTR MSG_LEVEL_BED                      = _UxGT("调平热床");     // "Level bed"
   LSTR MSG_BED_TRAMMING                   = _UxGT("调平边角");     // "Bed Tramming"
+  LSTR MSG_BED_TRAMMING_MANUAL            = _UxGT("手动调平");
+  LSTR MSG_BED_TRAMMING_RAISE             = _UxGT("调整床角直到探头触发");
+  LSTR MSG_BED_TRAMMING_IN_RANGE          = _UxGT("热床已调平");
+  LSTR MSG_BED_TRAMMING_GOOD_POINTS       = _UxGT("床角：");
+  LSTR MSG_BED_TRAMMING_LAST_Z            = _UxGT("上一个 Z: ");
   LSTR MSG_NEXT_CORNER                    = _UxGT("下个边角");     // "Next corner"
   LSTR MSG_MESH_EDITOR                    = _UxGT("网格编辑器");
   LSTR MSG_EDIT_MESH                      = _UxGT("编辑网格");     // "Edit Mesh"
@@ -177,7 +217,7 @@ namespace Language_zh_CN {
   LSTR MSG_UBL_INVALIDATE_ALL             = _UxGT("作废所有的");     // "Invalidate All"
   LSTR MSG_UBL_INVALIDATE_CLOSEST         = _UxGT("作废最近的");     // "Invalidate Closest"
   LSTR MSG_UBL_FINE_TUNE_ALL              = _UxGT("细调所有的");     // "Fine Tune All"
-  LSTR MSG_UBL_FINE_TUNE_CLOSEST          = _UxGT("细调最近的");     // "Fine Tune Closest"
+  LSTR MSG_UBL_FINE_TUNE_CLOSEST          = _UxGT("细调附近的");     // "Fine Tune Closest"
   LSTR MSG_UBL_STORAGE_MESH_MENU          = _UxGT("网格存储");     // "Mesh Storage"
   LSTR MSG_UBL_STORAGE_SLOT               = _UxGT("存储槽");     // "Memory Slot"
   LSTR MSG_UBL_LOAD_MESH                  = _UxGT("装载热床网格");     // "Load Bed Mesh"
@@ -272,7 +312,7 @@ namespace Language_zh_CN {
   LSTR MSG_VC_JERK                        = _UxGT("轴抖动速率") STR_C;     // "Vc-jerk"
   LSTR MSG_VN_JERK                        = _UxGT("轴抖动速率@");          // "V@-jerk"
   LSTR MSG_VE_JERK                        = _UxGT("挤出机抖动速率");     // "Ve-jerk"
-  LSTR MSG_JUNCTION_DEVIATION             = _UxGT("接点差");
+  LSTR MSG_JUNCTION_DEVIATION             = _UxGT("接角偏差");
   LSTR MSG_MAX_SPEED                      = _UxGT("速度");     // "Velocity"
   LSTR MSG_VMAX_A                         = _UxGT("最大进料速率") STR_A;     // "Vmax " max_feedrate_mm_s
   LSTR MSG_VMAX_B                         = _UxGT("最大进料速率") STR_B;
@@ -314,8 +354,8 @@ namespace Language_zh_CN {
   LSTR MSG_ADVANCE_K_E                    = _UxGT("Advance K *");
   LSTR MSG_CONTRAST                       = _UxGT("LCD对比度");     // "LCD contrast"
   LSTR MSG_STORE_EEPROM                   = _UxGT("保存设置");     // "Store memory"
-  LSTR MSG_LOAD_EEPROM                    = _UxGT("装载设置");     // "Load memory"
-  LSTR MSG_RESTORE_DEFAULTS               = _UxGT("恢复安全值");     // "Restore Defaults"
+  LSTR MSG_LOAD_EEPROM                    = _UxGT("恢复上次设置");     // "Load memory"
+  LSTR MSG_RESTORE_DEFAULTS               = _UxGT("重置设置");     // "Restore Defaults"
   LSTR MSG_INIT_EEPROM                    = _UxGT("初始化设置");     // "Initialize EEPROM"
   LSTR MSG_ERR_EEPROM_CRC                 = _UxGT("EEPROM CRC 错误");
   LSTR MSG_ERR_EEPROM_INDEX               = _UxGT("EEPROM Index 错误");
@@ -325,6 +365,7 @@ namespace Language_zh_CN {
   LSTR MSG_RESET_PRINTER                  = _UxGT("复位打印机");
   LSTR MSG_REFRESH                        = LCD_STR_REFRESH _UxGT("刷新");
   LSTR MSG_INFO_SCREEN                    = _UxGT("信息屏");     // "Info screen"
+  LSTR MSG_INFO_MACHINENAME               = _UxGT("生产机器66");
   LSTR MSG_PREPARE                        = _UxGT("准备");     // "Prepare"
   LSTR MSG_TUNE                           = _UxGT("调整");     // "Tune"
   LSTR MSG_POWER_MONITOR                  = _UxGT("电源监控");
@@ -387,7 +428,7 @@ namespace Language_zh_CN {
   LSTR MSG_TOOL_MIGRATION_AUTO            = _UxGT("自动迁移");
   LSTR MSG_TOOL_MIGRATION_END             = _UxGT("上一个挤出机");
   LSTR MSG_TOOL_MIGRATION_SWAP            = _UxGT("迁移至 *");
-  LSTR MSG_FILAMENTCHANGE                 = _UxGT("更换丝料");     // "Change filament"
+  LSTR MSG_FILAMENTCHANGE                 = _UxGT("换料");     // "Change filament"
   LSTR MSG_FILAMENTCHANGE_E               = _UxGT("更换丝料 *");     // "Change filament"
   LSTR MSG_FILAMENTLOAD                   = _UxGT("装载丝料");     // "Load filament"
   LSTR MSG_FILAMENTLOAD_E                 = _UxGT("装载丝料 *");     // "Load filament"
@@ -402,7 +443,7 @@ namespace Language_zh_CN {
   LSTR MSG_BLTOUCH                        = _UxGT("BLTouch");     // "BLTouch"
   LSTR MSG_BLTOUCH_SELFTEST               = _UxGT("自检");
   LSTR MSG_BLTOUCH_RESET                  = _UxGT("重置");
-  LSTR MSG_BLTOUCH_STOW                   = _UxGT("装载");
+  LSTR MSG_BLTOUCH_STOW                   = _UxGT("收回");
   LSTR MSG_BLTOUCH_DEPLOY                 = _UxGT("部署");
   LSTR MSG_BLTOUCH_SW_MODE                = _UxGT("SW模式");
   LSTR MSG_BLTOUCH_5V_MODE                = _UxGT("5V模式");
@@ -418,7 +459,7 @@ namespace Language_zh_CN {
   LSTR MSG_TOUCHMI_SAVE                   = _UxGT("保存");
   LSTR MSG_MANUAL_DEPLOY_TOUCHMI          = _UxGT("部署TouchMI");
   LSTR MSG_MANUAL_DEPLOY                  = _UxGT("部署Z探针");
-  LSTR MSG_MANUAL_STOW                    = _UxGT("收好Z探针");
+  LSTR MSG_MANUAL_STOW                    = _UxGT("收回Z探针");
   LSTR MSG_HOME_FIRST                     = _UxGT("归位 %s 先");     // "Home ... first"
   LSTR MSG_ZPROBE_OFFSETS                 = _UxGT("探针偏移量");
   LSTR MSG_ZPROBE_XOFFSET                 = _UxGT("探针X偏移");
@@ -609,4 +650,11 @@ namespace Language_zh_CN {
   LSTR MSG_SHORT_DAY                      = _UxGT("天");     // "d" // One character only
   LSTR MSG_SHORT_HOUR                     = _UxGT("时");     // "h" // One character only
   LSTR MSG_SHORT_MINUTE                   = _UxGT("分");     // "m" // One character only
+
+  LSTR MSG_PROBE_WIZARD                   = _UxGT("运行Z探针校准向导");
+  LSTR MSG_PROBE_WIZARD_PROBING           = _UxGT("测量参照值");
+  LSTR MSG_PROBE_WIZARD_MOVING            = _UxGT("正在移动到测量位置");
+
+  LSTR MSG_SOUND                          = _UxGT("声音");
+
 }

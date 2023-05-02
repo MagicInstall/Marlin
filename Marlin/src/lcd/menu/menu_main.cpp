@@ -35,6 +35,11 @@
 #include "../../module/stepper.h"
 #include "../../sd/cardreader.h"
 
+#if HAS_LEVELING
+  // #include "../../module/planner.h"
+  #include "../../feature/bedlevel/bedlevel.h"
+#endif
+
 #if ENABLED(PSU_CONTROL)
   #include "../../feature/power.h"
 #endif
@@ -65,6 +70,8 @@
 #if ENABLED(GCODE_REPEAT_MARKERS)
   #include "../../feature/repeat.h"
 #endif
+
+
 
 void menu_tune();
 void menu_cancelobject();
@@ -232,6 +239,102 @@ void menu_configuration();
   #endif
 #endif
 
+// Wing
+
+#if ENABLED(AUTO_BED_LEVELING_UBL)
+  void _lcd_ubl_level_bed();
+#elif ENABLED(LCD_BED_LEVELING)
+  void menu_bed_leveling();
+#endif
+
+#if ENABLED(ASSISTED_TRAMMING_WIZARD)
+  void goto_tramming_wizard();
+#endif
+
+// Wing：加个调平菜单 
+//
+// 原先放得太深入了
+//
+void menu_repair() {
+  START_MENU();
+  BACK_ITEM(MSG_MAIN_MENU);
+  
+  //
+  // Level Bed
+  //
+  #if ENABLED(AUTO_BED_LEVELING_UBL)
+
+    SUBMENU(MSG_UBL_LEVEL_BED, _lcd_ubl_level_bed);
+
+  #elif ENABLED(LCD_BED_LEVELING)
+
+    if (!g29_in_progress)
+      SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
+
+  #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
+
+    #if DISABLED(PROBE_MANUALLY)
+      GCODES_ITEM(MSG_LEVEL_BED, F("G29N"));
+    #endif
+
+    if (all_axes_homed() && leveling_is_valid()) {
+      bool show_state = planner.leveling_active;
+      EDIT_ITEM(bool, MSG_BED_LEVELING, &show_state, _lcd_toggle_bed_leveling);
+    }
+
+    #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
+      editable.decimal = planner.z_fade_height;
+      EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });
+    #endif
+
+  #endif
+
+  //
+  // Assisted Bed Tramming
+  //
+  #if ENABLED(ASSISTED_TRAMMING_WIZARD)
+    SUBMENU(MSG_TRAMMING_WIZARD, goto_tramming_wizard);
+  #endif
+
+  #if ENABLED(LCD_BED_TRAMMING) && DISABLED(LCD_BED_LEVELING)
+    SUBMENU(MSG_BED_TRAMMING, _lcd_bed_tramming);
+  #endif
+
+  #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
+    GCODES_ITEM(MSG_M48_TEST, F("G28O\nM48 P10"));
+  #endif
+
+  // Probe Offset Wizard
+  //
+  #if ENABLED(PROBE_OFFSET_WIZARD)
+    SUBMENU(MSG_PROBE_WIZARD, goto_probe_offset_wizard);
+  #endif
+
+  //
+  // Probe Deploy/Stow
+  //
+  #if ENABLED(PROBE_DEPLOY_STOW_MENU)
+    GCODES_ITEM(MSG_MANUAL_DEPLOY, F("M401"));
+    GCODES_ITEM(MSG_MANUAL_STOW, F("M402"));
+  #endif
+
+  //
+  // Auto Z-Align
+  //
+  #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
+    GCODES_ITEM(MSG_AUTO_Z_ALIGN, F("G34"));
+  #endif
+
+  //
+  // Auto-calibration
+  //
+  #if ENABLED(CALIBRATION_GCODE)
+    GCODES_ITEM(MSG_AUTO_CALIBRATE, F("G425"));
+  #endif
+
+  END_MENU();
+}
+
 void menu_main() {
   const bool busy = printingIsActive()
     #if HAS_MEDIA
@@ -273,6 +376,49 @@ void menu_main() {
     #endif
   }
   else {
+    if (TERN0(MACHINE_CAN_PAUSE, printingIsPaused()))
+      ACTION_ITEM(MSG_RESUME_PRINT, ui.resume_print);
+
+    #if HAS_MEDIA && DISABLED(MEDIA_MENU_AT_TOP)
+    // BEGIN MEDIA MENU
+    #if ENABLED(MENU_ADDAUTOSTART)
+      ACTION_ITEM(MSG_RUN_AUTO_FILES, card.autofile_begin); // Run Auto Files
+    #endif
+
+    if (card_detected) {
+      if (!card_open) {
+        SUBMENU(MSG_MEDIA_MENU, MEDIA_MENU_GATEWAY);      // Media Menu (or Password First)
+
+        // #if HAS_SD_DETECT
+        //   GCODES_ITEM(MSG_CHANGE_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Change Media
+        //   #if ENABLED(MULTI_VOLUME)
+        //     GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U")); // M21 Attach USB Media
+        //   #endif
+        // #else                                             // - or -
+        //   ACTION_ITEM(MSG_RELEASE_MEDIA, []{              // M22 Release Media
+        //     queue.inject(F("M22"));
+        //     #if ENABLED(TFT_COLOR_UI)
+        //       // Menu display issue on item removal with multi language selection menu
+        //       if (encoderTopLine > 0) encoderTopLine--;
+        //       ui.refresh(LCDVIEW_CALL_REDRAW_NEXT);
+        //     #endif
+        //   });
+        // #endif
+      }
+    }
+    else {
+      #if HAS_SD_DETECT
+        ACTION_ITEM(MSG_NO_MEDIA, nullptr);               // "No Media"
+      #else
+        GCODES_ITEM(MSG_ATTACH_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Attach Media
+        #if ENABLED(MULTI_VOLUME)
+          GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U"));   // M21 Attach USB Media
+        #endif
+      #endif
+    }
+    // END MEDIA MENU
+    #endif
+
     #if BOTH(HAS_MEDIA, MEDIA_MENU_AT_TOP)
       // BEGIN MEDIA MENU
       #if ENABLED(MENU_ADDAUTOSTART)
@@ -312,9 +458,6 @@ void menu_main() {
       // END MEDIA MENU
     #endif
 
-    if (TERN0(MACHINE_CAN_PAUSE, printingIsPaused()))
-      ACTION_ITEM(MSG_RESUME_PRINT, ui.resume_print);
-
     #if ENABLED(HOST_START_MENU_ITEM) && defined(ACTION_ON_START)
       ACTION_ITEM(MSG_HOST_START_PRINT, hostui.start);
     #endif
@@ -323,12 +466,10 @@ void menu_main() {
       SUBMENU(MSG_PREHEAT_CUSTOM, menu_preheat_only);
     #endif
 
+    SUBMENU(MSG_REPAIR, menu_repair);
+
     SUBMENU(MSG_MOTION, menu_motion);
   }
-
-  #if BOTH(ADVANCED_PAUSE_FEATURE, DISABLE_ENCODER)
-    FILAMENT_CHANGE_ITEM();
-  #endif
 
   #if HAS_CUTTER
     SUBMENU(MSG_CUTTER(MENU), STICKY_SCREEN(menu_spindle_laser));
@@ -340,6 +481,14 @@ void menu_main() {
 
   #if HAS_POWER_MONITOR
     SUBMENU(MSG_POWER_MONITOR, menu_power_monitor);
+  #endif
+
+  #if BOTH(ADVANCED_PAUSE_FEATURE, DISABLE_ENCODER)
+    FILAMENT_CHANGE_ITEM();
+  #endif
+
+  #if ENABLED(ADVANCED_PAUSE_FEATURE) && DISABLED(DISABLE_ENCODER)
+    FILAMENT_CHANGE_ITEM();
   #endif
 
   #if ENABLED(MIXING_EXTRUDER)
@@ -362,10 +511,6 @@ void menu_main() {
     }
   #endif
 
-  #if ENABLED(LCD_INFO_MENU)
-    SUBMENU(MSG_INFO_MENU, menu_info);
-  #endif
-
   #if EITHER(LED_CONTROL_MENU, CASE_LIGHT_MENU)
     SUBMENU(MSG_LEDS, menu_led);
   #endif
@@ -386,45 +531,6 @@ void menu_main() {
       #endif
     else
       GCODES_ITEM(MSG_SWITCH_PS_ON, F("M80"));
-  #endif
-
-  #if HAS_MEDIA && DISABLED(MEDIA_MENU_AT_TOP)
-    // BEGIN MEDIA MENU
-    #if ENABLED(MENU_ADDAUTOSTART)
-      ACTION_ITEM(MSG_RUN_AUTO_FILES, card.autofile_begin); // Run Auto Files
-    #endif
-
-    if (card_detected) {
-      if (!card_open) {
-        #if HAS_SD_DETECT
-          GCODES_ITEM(MSG_CHANGE_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Change Media
-          #if ENABLED(MULTI_VOLUME)
-            GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U")); // M21 Attach USB Media
-          #endif
-        #else                                             // - or -
-          ACTION_ITEM(MSG_RELEASE_MEDIA, []{              // M22 Release Media
-            queue.inject(F("M22"));
-            #if ENABLED(TFT_COLOR_UI)
-              // Menu display issue on item removal with multi language selection menu
-              if (encoderTopLine > 0) encoderTopLine--;
-              ui.refresh(LCDVIEW_CALL_REDRAW_NEXT);
-            #endif
-          });
-        #endif
-        SUBMENU(MSG_MEDIA_MENU, MEDIA_MENU_GATEWAY);      // Media Menu (or Password First)
-      }
-    }
-    else {
-      #if HAS_SD_DETECT
-        ACTION_ITEM(MSG_NO_MEDIA, nullptr);               // "No Media"
-      #else
-        GCODES_ITEM(MSG_ATTACH_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Attach Media
-        #if ENABLED(MULTI_VOLUME)
-          GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U"));   // M21 Attach USB Media
-        #endif
-      #endif
-    }
-    // END MEDIA MENU
   #endif
 
   #if HAS_SERVICE_INTERVALS
@@ -481,10 +587,6 @@ void menu_main() {
     }
   #endif
 
-  #if HAS_MULTI_LANGUAGE
-    SUBMENU(LANGUAGE, menu_language);
-  #endif
-
   #if ENABLED(HOST_SHUTDOWN_MENU_ITEM) && defined(SHUTDOWN_ACTION)
     SUBMENU(MSG_HOST_SHUTDOWN, []{
       MenuItem_confirm::select_screen(
@@ -495,8 +597,12 @@ void menu_main() {
     });
   #endif
 
-  #if ENABLED(ADVANCED_PAUSE_FEATURE) && DISABLED(DISABLE_ENCODER)
-    FILAMENT_CHANGE_ITEM();
+  #if HAS_MULTI_LANGUAGE
+    SUBMENU(LANGUAGE, menu_language);
+  #endif
+
+  #if ENABLED(LCD_INFO_MENU)
+    SUBMENU(MSG_INFO_MENU, menu_info);
   #endif
 
   END_MENU();
