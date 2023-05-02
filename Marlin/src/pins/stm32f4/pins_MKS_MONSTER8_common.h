@@ -58,7 +58,8 @@
 #define Y_DIAG_PIN                          PA15  // Driver1 diag signal is connected to Y-
 #define Z_DIAG_PIN                          PB13  // Driver2 diag signal is connected to Z-
 #define E0_DIAG_PIN                         PA13  // Driver3 diag signal is connected to X+
-#define E1_DIAG_PIN                         PC5   // Driver4 diag signal is connected to Y+
+// #define E1_DIAG_PIN                         PC5   // Driver4 diag signal is connected to Y+
+#define Z2_DIAG_PIN                         PC5   // Driver4 diag signal is connected to Y+
 #define E2_DIAG_PIN                         PB12  // Driver5 diag signal is connected to Z+
 #define E3_DIAG_PIN                         -1    // Driver6 diag signal is not connected
 #define E4_DIAG_PIN                         -1    // Driver7 diag signal is not connected
@@ -98,11 +99,17 @@
   #define E0_CS_PIN                         PB3
 #endif
 
-#define E1_ENABLE_PIN                       PD7   // Driver4
-#define E1_STEP_PIN                         PD6
-#define E1_DIR_PIN                          PD5
-#ifndef E1_CS_PIN
-  #define E1_CS_PIN                         PD4
+// #define E1_ENABLE_PIN                       PD7   // Driver4
+// #define E1_STEP_PIN                         PD6
+// #define E1_DIR_PIN                          PD5
+// #ifndef E1_CS_PIN
+//   #define E1_CS_PIN                         PD4
+// #endif
+#define Z2_ENABLE_PIN                       PD7   // Driver4
+#define Z2_STEP_PIN                         PD6
+#define Z2_DIR_PIN                          PD5
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN                         PD4
 #endif
 
 #define E2_ENABLE_PIN                       PD3   // Driver5
@@ -162,8 +169,10 @@
   #define E0_SERIAL_TX_PIN                  PB3
   #define E0_SERIAL_RX_PIN      E0_SERIAL_TX_PIN
 
-  #define E1_SERIAL_TX_PIN                  PD4
-  #define E1_SERIAL_RX_PIN      E1_SERIAL_TX_PIN
+  // #define E1_SERIAL_TX_PIN                  PD4
+  // #define E1_SERIAL_RX_PIN      E1_SERIAL_TX_PIN  
+  #define Z2_SERIAL_TX_PIN                  PD4
+  #define Z2_SERIAL_RX_PIN      Z2_SERIAL_TX_PIN // TODO:其它轴(A、B、C轴)改名记得改埋哩个
 
   #define E2_SERIAL_TX_PIN                  PD0
   #define E2_SERIAL_RX_PIN      E2_SERIAL_TX_PIN
