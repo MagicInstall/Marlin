@@ -641,6 +641,10 @@ void _lcd_ubl_level_bed() {
     GCODES_ITEM(MSG_UBL_DEACTIVATE_MESH, F("G29D"));
   else
     GCODES_ITEM(MSG_UBL_ACTIVATE_MESH, F("G29A"));
+
+  GCODES_ITEM(MSG_UBL_BUILD_COLD_MESH, F("G29NP1")); // wing
+  GCODES_ITEM(MSG_UBL_SMART_FILLIN, F("G29P3T0"));   // wing
+
   #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
     editable.decimal = planner.z_fade_height;
     EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });

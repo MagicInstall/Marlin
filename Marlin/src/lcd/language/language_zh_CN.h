@@ -212,7 +212,7 @@ namespace Language_zh_CN {
   LSTR MSG_UBL_INFO_UBL                   = _UxGT("输出UBL信息");     // "Output UBL Info"
   LSTR MSG_UBL_FILLIN_AMOUNT              = _UxGT("填充合计");     // "Fill-in Amount"
   LSTR MSG_UBL_MANUAL_FILLIN              = _UxGT("手工填充");     // "Manual Fill-in"
-  LSTR MSG_UBL_SMART_FILLIN               = _UxGT("聪明填充");     // "Smart Fill-in"
+  LSTR MSG_UBL_SMART_FILLIN               = _UxGT("自动填充");     // "Smart Fill-in"
   LSTR MSG_UBL_FILLIN_MESH                = _UxGT("填充网格");     // "Fill-in Mesh"
   LSTR MSG_UBL_INVALIDATE_ALL             = _UxGT("作废所有的");     // "Invalidate All"
   LSTR MSG_UBL_INVALIDATE_CLOSEST         = _UxGT("作废最近的");     // "Invalidate Closest"
@@ -256,6 +256,9 @@ namespace Language_zh_CN {
   LSTR MSG_INTENSITY_B                    = _UxGT("蓝饱和度");     // "Blue Intensity"
   LSTR MSG_INTENSITY_W                    = _UxGT("白饱和度");     // "White Intensity"
   LSTR MSG_LED_BRIGHTNESS                 = _UxGT("亮度");     // "Brightness"
+  LSTR MSG_LEDS2                          = _UxGT("灯2");
+  LSTR MSG_NEO2_PRESETS                   = _UxGT("灯2预置");
+  LSTR MSG_NEO2_BRIGHTNESS                = _UxGT("灯2亮度");
 
   LSTR MSG_MOVING                         = _UxGT("移动...");     // "Moving..."
   LSTR MSG_FREE_XY                        = _UxGT("释放 XY");     // "Free XY"
