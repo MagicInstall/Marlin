@@ -76,8 +76,8 @@ namespace Language_zh_CN {
   // LSTR MSG_AUTO_MESH                      = _UxGT("Auto Build Mesh");
   LSTR MSG_AUTO_Z_ALIGN                   = _UxGT("Z轴自动对齐");
   LSTR MSG_ITERATION                      = _UxGT("G34 重复: %i");
-  LSTR MSG_DECREASING_ACCURACY            = _UxGT("精度下降!");
-  LSTR MSG_ACCURACY_ACHIEVED              = _UxGT("精度达标");
+  LSTR MSG_DECREASING_ACCURACY            = _UxGT("Z不平!");
+  LSTR MSG_ACCURACY_ACHIEVED              = _UxGT("Z已调平");
   LSTR MSG_LEVEL_BED_HOMING               = _UxGT("平台调平XYZ回原点");     // "Homing XYZ"
   LSTR MSG_LEVEL_BED_WAITING              = _UxGT("单击开始热床调平");     // "Click to Begin"
   LSTR MSG_LEVEL_BED_NEXT_POINT           = _UxGT("下个热床调平点");     // "Next Point"

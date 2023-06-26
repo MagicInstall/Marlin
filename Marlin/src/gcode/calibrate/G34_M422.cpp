@@ -224,7 +224,8 @@ void GcodeSuite::G34() {
           // Probe a Z height for each stepper.
           // Probing sanity check is disabled, as it would trigger even in normal cases because
           // current_position.z has been manually altered in the "dirty trick" above.
-          const float z_probed_height = probe.probe_at_point(DIFF_TERN(HAS_HOME_OFFSET, ppos, xy_pos_t(home_offset)), raise_after, 0, true, false);
+          // TODO:第二个参数唔知点解默认系PROBE_PT_RAISE，令到BL Touch 探测后唔抬升导致调平失败，暂时将哩个参数写死，用住先...
+          const float z_probed_height = probe.probe_at_point(DIFF_TERN(HAS_HOME_OFFSET, ppos, xy_pos_t(home_offset)), PROBE_PT_STOW/*raise_after*/, 0, true, false); 
           if (isnan(z_probed_height)) {
             SERIAL_ECHOLNPGM("Probing failed");
             LCD_MESSAGE(MSG_LCD_PROBING_FAILED);
