@@ -85,19 +85,19 @@
   #define Y_CS_PIN                          PE3
 #endif
 
-#define Z_ENABLE_PIN                        PE2   // Driver2
-#define Z_STEP_PIN                          PE1
-#define Z_DIR_PIN                           PE0
-#ifndef Z_CS_PIN
-  #define Z_CS_PIN                          PB7
-#endif
+// #define Z_ENABLE_PIN                        PE2   // Driver2
+// #define Z_STEP_PIN                          PE1
+// #define Z_DIR_PIN                           PE0
+// #ifndef Z_CS_PIN
+//   #define Z_CS_PIN                          PB7
+// #endif
 
-#define E0_ENABLE_PIN                       PB6   // Driver3
-#define E0_STEP_PIN                         PB5
-#define E0_DIR_PIN                          PB4
-#ifndef E0_CS_PIN
-  #define E0_CS_PIN                         PB3
-#endif
+// #define E0_ENABLE_PIN                       PB6   // Driver3
+// #define E0_STEP_PIN                         PB5
+// #define E0_DIR_PIN                          PB4
+// #ifndef E0_CS_PIN
+//   #define E0_CS_PIN                         PB3
+// #endif
 
 // #define E1_ENABLE_PIN                       PD7   // Driver4
 // #define E1_STEP_PIN                         PD6
@@ -105,6 +105,21 @@
 // #ifndef E1_CS_PIN
 //   #define E1_CS_PIN                         PD4
 // #endif
+
+#define E0_ENABLE_PIN                       PE2   // Driver2
+#define E0_STEP_PIN                         PE1
+#define E0_DIR_PIN                          PE0
+#ifndef E0_CS_PIN
+  #define E0_CS_PIN                         PB7
+#endif
+
+#define Z_ENABLE_PIN                        PB6   // Driver3
+#define Z_STEP_PIN                          PB5
+#define Z_DIR_PIN                           PB4
+#ifndef Z_CS_PIN
+  #define Z_CS_PIN                          PB3
+#endif
+
 #define Z2_ENABLE_PIN                       PD7   // Driver4
 #define Z2_STEP_PIN                         PD6
 #define Z2_DIR_PIN                          PD5
