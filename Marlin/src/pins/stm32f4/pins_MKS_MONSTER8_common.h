@@ -49,7 +49,7 @@
 //
 // Servos
 //
-#define SERVO0_PIN                          PA8   // Enable BLTOUCH
+#define SERVO0_PIN                          PA8   // BLTOUCH
 
 //
 // Limit Switches for diag signals
@@ -127,11 +127,11 @@
   #define Z2_CS_PIN                         PD4
 #endif
 
-#define E2_ENABLE_PIN                       PD3   // Driver5
-#define E2_STEP_PIN                         PD2
-#define E2_DIR_PIN                          PD1
-#ifndef E2_CS_PIN
-  #define E2_CS_PIN                         PD0
+#define E1_ENABLE_PIN                       PD3   // Driver5
+#define E1_STEP_PIN                         PD2
+#define E1_DIR_PIN                          PD1
+#ifndef E1_CS_PIN
+  #define E1_CS_PIN                         PD0
 #endif
 
 #define E3_ENABLE_PIN                       PC8   // Driver6
@@ -141,7 +141,8 @@
   #define E3_CS_PIN                         PD15
 #endif
 
-#define E4_STEP_PIN                         PD13  // Driver7
+#define E4_ENABLE_PIN                       PB6   // Driver7
+#define E4_STEP_PIN                         PD13  
 #define E4_DIR_PIN                          PD12
 #ifndef E4_CS_PIN
   #define E4_CS_PIN                         PD11
@@ -213,21 +214,22 @@
 // Temperature Sensors
 //
 #define TEMP_0_PIN                          PC1   // TH0
-#define TEMP_1_PIN                          PC2   // TH1
-#define TEMP_2_PIN                          PC3   // TH2
+//#define TEMP_1_PIN                          PC2   // TH1  wing:改为断料检测2
+//#define TEMP_2_PIN                          PC3   // TH2  wing:改为断料检测1
 #define TEMP_BED_PIN                        PC0   // TB
 
 //
 // Heaters / Fans
 //
 #define HEATER_0_PIN                        PB1   // HE0
-#define HEATER_1_PIN                        PB0   // HE1
-#define HEATER_2_PIN                        PA3   // HE2
+// #define HEATER_1_PIN                        PB0   // HE1 wing:改为FAN0
+// #define HEATER_2_PIN                        PA3   // HE2 wing:改为Servo1
 #define HEATER_BED_PIN                      PB10  // H-BED
 
-#define FAN0_PIN                            PA2   // FAN0
+#define FAN0_PIN                            PB0   // FAN0 wing
 #define FAN1_PIN                            PA1   // FAN1
-#define FAN2_PIN                            PA0   // FAN2
+#define FAN2_PIN                            PA0   // FAN2  
+#define FAN3_PIN                            PA2   // FAN3 wing
 
 //
 // Power Supply Control

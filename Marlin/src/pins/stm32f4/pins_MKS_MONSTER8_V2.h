@@ -32,7 +32,9 @@
 //
 // Steppers
 //
-#define E4_ENABLE_PIN                       PB6   // Driver7
+#ifndef E4_ENABLE_PIN
+  #define E4_ENABLE_PIN                     PB6   // Driver7
+#endif
 
 //
 // Misc. Functions
@@ -41,12 +43,12 @@
 #define PW_OFF                              PB12  // Z+
 #define MT_DET_1_PIN                      PW_DET
 #define MT_DET_2_PIN                      PW_OFF
-#ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN            MT_DET_1_PIN
-#endif
-#ifndef FIL_RUNOUT2_PIN
-  #define FIL_RUNOUT2_PIN           MT_DET_2_PIN
-#endif
+
+//
+// Filament Runout Sensors 断料检测
+//
+#define FIL_RUNOUT_PIN                      PC2 // wing
+#define FIL_RUNOUT2_PIN                     PC3 // wing
 
 //
 // MKS WIFI MODULE
@@ -59,6 +61,11 @@
 #endif
 
 // #define NEOPIXEL_PIN                        PC5
-#define NEOPIXEL2_PIN                        PC5
+#define NEOPIXEL2_PIN                       PC5
+
+//
+// Servo
+//
+#define SERVO1_PIN                          PA3   // wing
 
 #include "pins_MKS_MONSTER8_common.h"
