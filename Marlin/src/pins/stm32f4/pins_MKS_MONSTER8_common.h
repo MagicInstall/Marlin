@@ -214,8 +214,8 @@
 // Temperature Sensors
 //
 #define TEMP_0_PIN                          PC1   // TH0
-//#define TEMP_1_PIN                          PC2   // TH1  wing:改为断料检测2
-//#define TEMP_2_PIN                          PC3   // TH2  wing:改为断料检测1
+//#define TEMP_1_PIN                          PC2   // TH1  wing:改为断料检测1(热端)
+//#define TEMP_2_PIN                          PC3   // TH2  wing:改为断料检测2(AMS端)
 #define TEMP_BED_PIN                        PC0   // TB
 
 //
