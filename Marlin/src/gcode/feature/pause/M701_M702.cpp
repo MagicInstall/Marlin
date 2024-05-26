@@ -28,6 +28,7 @@
 #include "../../../MarlinCore.h"
 #include "../../../module/motion.h"
 #include "../../../module/temperature.h"
+#include "../../../module/servo.h"
 #include "../../../feature/pause.h"
 #include "../../../lcd/marlinui.h"
 
@@ -209,6 +210,14 @@ void GcodeSuite::M702() {
       else
     #endif
     {
+      #if ENABLED(PRODMACH)
+      // 切断料丝
+      servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
+      safe_delay(SERVO_AFTER_MOVING_DELAY);
+      servo[CUTTING_SERVO_NUM].move(0);
+      safe_delay(SERVO_AFTER_MOVING_DELAY);
+      #endif
+
       // Unload length
       const float unload_length = -ABS(parser.seen('U') ? parser.value_axis_units(E_AXIS)
                                                         : fc_settings[target_extruder].unload_length);
