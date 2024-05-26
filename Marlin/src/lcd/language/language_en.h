@@ -914,4 +914,6 @@ namespace Language_en {
   LSTR DGUS_MSG_READ_EEPROM_FAILED        = _UxGT("EEPROM read failed");
   LSTR DGUS_MSG_FILAMENT_RUNOUT           = _UxGT("Filament runout E%d");
 
+  LSTR MSG_SERVO_ANGLE                    = _UxGT("Servo angle");
+
 }

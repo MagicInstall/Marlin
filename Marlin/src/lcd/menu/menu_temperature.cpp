@@ -164,6 +164,14 @@ void menu_temperature() {
   START_MENU();
   BACK_ITEM(MSG_MAIN_MENU);
 
+  #if HAS_TEMP_HOTEND || HAS_HEATED_BED
+    //
+    // Cooldown
+    //
+    if (TERN0(HAS_HEATED_BED, thermalManager.degTargetBed())) has_heat = true;
+    if (has_heat) ACTION_ITEM(MSG_COOLDOWN, lcd_cooldown);
+  #endif
+
   //
   // Nozzle:
   // Nozzle [1-5]:
@@ -274,14 +282,6 @@ void menu_temperature() {
         ACTION_ITEM_f(ui.get_preheat_label(m), MSG_PREHEAT_M, do_preheat_end_m);
       #endif
     }
-  #endif
-
-  #if HAS_TEMP_HOTEND || HAS_HEATED_BED
-    //
-    // Cooldown
-    //
-    if (TERN0(HAS_HEATED_BED, thermalManager.degTargetBed())) has_heat = true;
-    if (has_heat) ACTION_ITEM(MSG_COOLDOWN, lcd_cooldown);
   #endif
 
   END_MENU();

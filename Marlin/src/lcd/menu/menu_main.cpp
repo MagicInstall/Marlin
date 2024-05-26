@@ -251,9 +251,9 @@ void menu_configuration();
   void goto_tramming_wizard();
 #endif
 
-// Wing：加个调平菜单 
+// Wing：加个整备菜单 
 //
-// 原先放得太深入了
+// 调平等功能原先放得太深入了
 //
 void menu_repair() {
   START_MENU();
@@ -313,10 +313,10 @@ void menu_repair() {
   //
   // Probe Deploy/Stow
   //
-  #if ENABLED(PROBE_DEPLOY_STOW_MENU)
-    GCODES_ITEM(MSG_MANUAL_DEPLOY, F("M401"));
-    GCODES_ITEM(MSG_MANUAL_STOW, F("M402"));
-  #endif
+  // #if ENABLED(PROBE_DEPLOY_STOW_MENU)
+  //   GCODES_ITEM(MSG_MANUAL_DEPLOY, F("M401"));
+  //   GCODES_ITEM(MSG_MANUAL_STOW, F("M402"));
+  // #endif
 
   //
   // Auto Z-Align
@@ -389,6 +389,7 @@ void menu_main() {
       if (!card_open) {
         SUBMENU(MSG_MEDIA_MENU, MEDIA_MENU_GATEWAY);      // Media Menu (or Password First)
 
+        /* wing : [更换储存卡]选项冇乜撚用 */
         // #if HAS_SD_DETECT
         //   GCODES_ITEM(MSG_CHANGE_MEDIA, F("M21" TERN_(MULTI_VOLUME, "S"))); // M21 Change Media
         //   #if ENABLED(MULTI_VOLUME)

@@ -29,6 +29,7 @@
 #if BOTH(HAS_MARLINUI_MENU, ADVANCED_PAUSE_FEATURE)
 
 #include "menu_item.h"
+#include "../../module/servo.h"
 #include "../../module/temperature.h"
 #include "../../feature/pause.h"
 #include "../../gcode/queue.h"
@@ -207,6 +208,14 @@ void menu_change_filament() {
           }
         #endif
       } // !printer_busy
+    #endif
+
+    // wing: 切刀舵机手动控制
+    #if ENABLED(PRODMACH)
+      // SUBMENU(MSG_SERVO_ANGLE, []{ _goto_cutting_move(10);    });
+      editable.int8 = servo[CUTTING_SERVO_NUM].read();
+      EDIT_ITEM_FAST(int3, MSG_SERVO_ANGLE, &editable.int16, 0, 180, []{servo[CUTTING_SERVO_NUM].move(editable.int16); });
+      // EDIT_ITEM_FAST(int3, MSG_SERVO_ANGLE, &editable.int16, 0, 180, []{ thermalManager.setTargetHotend(editable.celsius, 0); });
     #endif
 
     END_MENU();
