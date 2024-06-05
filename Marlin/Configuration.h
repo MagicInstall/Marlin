@@ -146,14 +146,14 @@
 #define Z2_DRIVER_TYPE TMC2209
 //#define Z3_DRIVER_TYPE A4988
 //#define Z4_DRIVER_TYPE A4988
-//#define I_DRIVER_TYPE  A4988
-//#define J_DRIVER_TYPE  A4988
-//#define K_DRIVER_TYPE  A4988
-//#define U_DRIVER_TYPE  A4988
-//#define V_DRIVER_TYPE  A4988
-//#define W_DRIVER_TYPE  A4988
+#define I_DRIVER_TYPE  TMC2209
+// #define J_DRIVER_TYPE  A4988
+// #define K_DRIVER_TYPE  A4988
+// #define U_DRIVER_TYPE  A4988
+// #define V_DRIVER_TYPE  A4988
+// #define W_DRIVER_TYPE  TMC2209
 #define E0_DRIVER_TYPE TMC2209
-//#define E1_DRIVER_TYPE A4988
+#define E1_DRIVER_TYPE TMC2209
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
@@ -179,8 +179,8 @@
  * Regardless of these settings the axes are internally named I, J, K, U, V, W.
  */
 #ifdef I_DRIVER_TYPE
-  #define AXIS4_NAME 'A' // :['A', 'B', 'C', 'U', 'V', 'W']
-  #define AXIS4_ROTATES
+  #define AXIS4_NAME 'W' // :['A', 'B', 'C', 'U', 'V', 'W']
+  // #define AXIS4_ROTATES
 #endif
 #ifdef J_DRIVER_TYPE
   #define AXIS5_NAME 'B' // :['B', 'C', 'U', 'V', 'W']
@@ -207,13 +207,13 @@
 
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
-#define EXTRUDERS 1
+#define EXTRUDERS 2
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-//#define SINGLENOZZLE
+#define SINGLENOZZLE
 
 // Save and restore temperature and fan speed on tool-change.
 // Set standby for the unselected tool with M104/106/109 T...
@@ -1081,7 +1081,7 @@
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
 #define USE_ZMIN_PLUG
-//#define USE_IMIN_PLUG
+#define USE_IMIN_PLUG
 //#define USE_JMIN_PLUG
 //#define USE_KMIN_PLUG
 //#define USE_UMIN_PLUG
@@ -1218,14 +1218,14 @@
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.9, 159.9, 800, 281.75/*8mm挤出齿*/ } 旧头
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.9, 159.9, 800, 814 } 
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.9, 159.9, 800, 160, 814} 
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 50, 15 }
 
 // #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1238,7 +1238,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 300, 300, 100, 100 }
+#define DEFAULT_MAX_ACCELERATION      { 300, 300, 100, 100, 100}
 
 // #define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1270,12 +1270,12 @@
   #define DEFAULT_XJERK 10.0
   #define DEFAULT_YJERK 10.0
   #define DEFAULT_ZJERK  0.3
-  //#define DEFAULT_IJERK  0.3
+  #define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
   //#define DEFAULT_KJERK  0.3
   //#define DEFAULT_UJERK  0.3
   //#define DEFAULT_VJERK  0.3
-  //#define DEFAULT_WJERK  0.3
+  // #define DEFAULT_WJERK  0.3
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -1537,7 +1537,7 @@
  *     O-- FRONT --+
  */
 // #define NOZZLE_TO_PROBE_OFFSET { 26.4, -25.9, 0 } 旧头
-#define NOZZLE_TO_PROBE_OFFSET { -24.7, 0, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { -24.7, 0, 0 , 0}
 
 // Enable and set to use a specific tool for probing. Disable to allow any tool.
 #define PROBING_TOOL 0
@@ -1670,12 +1670,12 @@
 #define Y_ENABLE_ON 0
 #define Z_ENABLE_ON 0
 #define E_ENABLE_ON 0 // For all extruders
-//#define I_ENABLE_ON 0
+#define I_ENABLE_ON 0
 //#define J_ENABLE_ON 0
 //#define K_ENABLE_ON 0
 //#define U_ENABLE_ON 0
 //#define V_ENABLE_ON 0
-//#define W_ENABLE_ON 0
+// #define W_ENABLE_ON 0
 
 // Disable axis steppers immediately when they're not being stepped.
 // WARNING: When motors turn off there is a chance of losing position accuracy!
@@ -1703,7 +1703,7 @@
 #define INVERT_X_DIR false
 #define INVERT_Y_DIR false 
 #define INVERT_Z_DIR false
-//#define INVERT_I_DIR false
+#define INVERT_I_DIR false 
 //#define INVERT_J_DIR false
 //#define INVERT_K_DIR false
 //#define INVERT_U_DIR false
@@ -1744,12 +1744,12 @@
 #define X_HOME_DIR -1
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
-//#define I_HOME_DIR -1
+#define I_HOME_DIR -1
 //#define J_HOME_DIR -1
 //#define K_HOME_DIR -1
 //#define U_HOME_DIR -1
 //#define V_HOME_DIR -1
-//#define W_HOME_DIR -1
+// #define W_HOME_DIR -1
 
 // @section geometry
 
@@ -1767,8 +1767,8 @@
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 210
-//#define I_MIN_POS 0
-//#define I_MAX_POS 50
+#define I_MIN_POS -500
+#define I_MAX_POS 500 // TODO: W轴上限
 //#define J_MIN_POS 0
 //#define J_MAX_POS 50
 //#define K_MIN_POS 0
@@ -1777,8 +1777,8 @@
 //#define U_MAX_POS 50
 //#define V_MIN_POS 0
 //#define V_MAX_POS 50
-//#define W_MIN_POS 0
-//#define W_MAX_POS 50
+// #define W_MIN_POS 0
+// #define W_MAX_POS 50 
 
 /**
  * Software Endstops
@@ -2203,7 +2203,7 @@
 //#define MANUAL_X_HOME_POS 0
 //#define MANUAL_Y_HOME_POS 0
 //#define MANUAL_Z_HOME_POS 0
-//#define MANUAL_I_HOME_POS 0
+#define MANUAL_I_HOME_POS 0   // 让I轴跟E轴一样,开机时的位置就是0位.  wing
 //#define MANUAL_J_HOME_POS 0
 //#define MANUAL_K_HOME_POS 0
 //#define MANUAL_U_HOME_POS 0
@@ -2226,7 +2226,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) , (20*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -3487,7 +3487,7 @@
   // Support for second Adafruit NeoPixel LED driver controlled with M150 S1 ...
   #define NEOPIXEL2_SEPARATE // TODO：分开主板同屏幕的RGB // 新惗法：唔分开一二号，将其中3只作为background LED俾屏幕，屏幕菜单睇睇有冇单独控制background选项？/ 或者睇睇adv入边嘅M355 Case Light
   #if ENABLED(NEOPIXEL2_SEPARATE)
-    #define NEOPIXEL2_PIXELS           48 // Number of LEDs in the second strip
+    #define NEOPIXEL2_PIXELS           48 + 19 // Number of LEDs in the second strip
     #define NEOPIXEL2_BRIGHTNESS      127 // Initial brightness (0-255)
     // #define NEOPIXEL2_STARTUP_TEST        // Cycle through colors at startup
     #define NEOPIXEL_M150_DEFAULT      -1 // Default strip for M150 without 'S'. Use -1 to set all by default.

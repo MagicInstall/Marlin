@@ -148,6 +148,12 @@ void GcodeSuite::M701() {
 void GcodeSuite::M702() {
   xyz_pos_t park_point = NOZZLE_PARK_POINT;
 
+  #if ENABLED(PRODMACH)
+    // 防止切刀档路   wing
+    servo[CUTTING_SERVO_NUM].move(0);
+    safe_delay(SERVO_AFTER_MOVING_DELAY);
+  #endif
+
   // Don't raise Z if the machine isn't homed
   if (TERN0(NO_MOTION_BEFORE_HOMING, axes_should_home())) park_point.z = 0;
 
@@ -211,7 +217,7 @@ void GcodeSuite::M702() {
     #endif
     {
       #if ENABLED(PRODMACH)
-      // 切断料丝
+      // 切断料丝   wing
       servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
       safe_delay(SERVO_AFTER_MOVING_DELAY);
       servo[CUTTING_SERVO_NUM].move(0);

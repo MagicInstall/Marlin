@@ -189,6 +189,9 @@ void xatc_wizard_homing_done() {
 //
 void xatc_wizard_homing() {
   _lcd_draw_homing();
+  #if ENABLED(PRODMACH) // 当作I轴已经回原点. wing
+    set_axis_homed(I_AXIS);
+  #endif
   if (all_axes_homed())
     ui.goto_screen(xatc_wizard_homing_done);
 }

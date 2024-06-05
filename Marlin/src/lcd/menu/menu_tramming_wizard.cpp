@@ -105,6 +105,9 @@ void goto_tramming_wizard() {
 
   ui.goto_screen([]{
     _lcd_draw_homing();
+    #if ENABLED(PRODMACH) // 当作I轴已经回原点. wing
+      set_axis_homed(I_AXIS);
+    #endif
     if (all_axes_homed())
       ui.goto_screen(tramming_wizard_menu);
   });

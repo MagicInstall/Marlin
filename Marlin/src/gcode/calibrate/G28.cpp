@@ -384,7 +384,12 @@ void GcodeSuite::G28() {
                  homeX = needX || parser.seen_test('X'),
                  homeY = needY || parser.seen_test('Y'),
                  homeZZ = homeZ,
-                 homeI = needI || parser.seen_test(AXIS4_NAME), homeJ = needJ || parser.seen_test(AXIS5_NAME),
+                 homeI = 
+                  #if DISABLED(PRODMACH) // 带Z参数也会触发全局回零,使I轴也回原点. wing
+                    needI || 
+                  #endif
+                  parser.seen_test(AXIS4_NAME), 
+                 homeJ = needJ || parser.seen_test(AXIS5_NAME),
                  homeK = needK || parser.seen_test(AXIS6_NAME), homeU = needU || parser.seen_test(AXIS7_NAME),
                  homeV = needV || parser.seen_test(AXIS8_NAME), homeW = needW || parser.seen_test(AXIS9_NAME)
                ),
@@ -522,11 +527,15 @@ void GcodeSuite::G28() {
       #endif
 
       SECONDARY_AXIS_CODE(
-        if (doI) homeaxis(I_AXIS),
+        #if ENABLED(PRODMACH) // 使I轴只能单独明确指定才会回原点. wing
+          if (!home_all && doI) homeaxis(I_AXIS),
+        #else
+          if (doI) homeaxis(I_AXIS),
+        #endif
         if (doJ) homeaxis(J_AXIS),
         if (doK) homeaxis(K_AXIS),
         if (doU) homeaxis(U_AXIS),
-        if (doV) homeaxis(V_AXIS),
+        if (doV) homeaxis(V_AXIS),  
         if (doW) homeaxis(W_AXIS)
       );
 

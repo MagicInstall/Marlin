@@ -486,6 +486,9 @@ void ubl_map_screen() {
 void _ubl_map_screen_homing() {
   ui.defer_status_screen();
   _lcd_draw_homing();
+  #if ENABLED(PRODMACH) // 当作I轴已经回原点. wing
+    set_axis_homed(I_AXIS);
+  #endif
   if (all_axes_homed()) {
     bedlevel.lcd_map_control = true;     // Return to the map screen after editing Z
     ui.goto_screen(ubl_map_screen, grid_index(x_plot, y_plot)); // Pre-set the encoder value

@@ -148,6 +148,9 @@ void goto_probe_offset_wizard() {
 
   ui.goto_screen([]{
     _lcd_draw_homing();
+    #if ENABLED(PRODMACH) // 当作I轴已经回原点. wing
+      set_axis_homed(I_AXIS);
+    #endif
     if (all_axes_homed()) {
       z_offset_ref = 0;             // Set Z Value for Wizard Position to 0
       ui.goto_screen(prepare_for_probe_offset_wizard);

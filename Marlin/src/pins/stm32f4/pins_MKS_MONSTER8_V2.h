@@ -29,12 +29,14 @@
 #define X_STOP_PIN                          PA14
 #define Y_STOP_PIN                          PA15
 
+#define I_STOP_PIN                          PD13// TODO 暂时借E4引脚,唔系编译唔过
+
 //
 // Steppers
 //
-#ifndef E4_ENABLE_PIN
-  #define E4_ENABLE_PIN                     PB6   // Driver7
-#endif
+// #ifndef E4_ENABLE_PIN
+//   #define E4_ENABLE_PIN                     PB6   // Driver7
+// #endif
 
 //
 // Misc. Functions

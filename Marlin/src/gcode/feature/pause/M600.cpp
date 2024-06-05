@@ -27,6 +27,7 @@
 #include "../../gcode.h"
 #include "../../../feature/pause.h"
 #include "../../../module/motion.h"
+#include "../../../module/servo.h"
 #include "../../../module/printcounter.h"
 #include "../../../lcd/marlinui.h"
 
@@ -137,6 +138,15 @@ void GcodeSuite::M600() {
 
   #if HAS_HOTEND_OFFSET && NONE(DUAL_X_CARRIAGE, DELTA)
     park_point += hotend_offset[active_extruder];
+  #endif
+
+
+  // 切断料丝   wing
+  #if ENABLED(PRODMACH)
+      servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
+      safe_delay(SERVO_AFTER_MOVING_DELAY);
+      servo[CUTTING_SERVO_NUM].move(0);
+      safe_delay(SERVO_AFTER_MOVING_DELAY);
   #endif
 
   // Unload filament

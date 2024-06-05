@@ -60,8 +60,8 @@
 #define E0_DIAG_PIN                         PA13  // Driver3 diag signal is connected to X+
 // #define E1_DIAG_PIN                         PC5   // Driver4 diag signal is connected to Y+
 #define Z2_DIAG_PIN                         PC5   // Driver4 diag signal is connected to Y+
-#define E2_DIAG_PIN                         PB12  // Driver5 diag signal is connected to Z+
-#define E3_DIAG_PIN                         -1    // Driver6 diag signal is not connected
+#define E1_DIAG_PIN                         -1    // Driver5 diag signal is connected to Z+
+#define I_DIAG_PIN                          PB12  // Driver6 diag signal is not connected
 #define E4_DIAG_PIN                         -1    // Driver7 diag signal is not connected
 
 // Limit Switches for endstops
@@ -134,14 +134,15 @@
   #define E1_CS_PIN                         PD0
 #endif
 
-#define E3_ENABLE_PIN                       PC8   // Driver6
-#define E3_STEP_PIN                         PC7
-#define E3_DIR_PIN                          PC6
-#ifndef E3_CS_PIN
-  #define E3_CS_PIN                         PD15
+#define I_ENABLE_PIN                       PC8   // Driver6
+#define I_STEP_PIN                         PC7
+#define I_DIR_PIN                          PC6
+#ifndef I_CS_PIN
+  #define I_CS_PIN                         PD15
 #endif
 
-#define E4_ENABLE_PIN                       PB6   // Driver7
+// Driver7
+#define E4_ENABLE_PIN                       Z_ENABLE_PIN   // 同Driver3 共用引脚
 #define E4_STEP_PIN                         PD13  
 #define E4_DIR_PIN                          PD12
 #ifndef E4_CS_PIN
@@ -197,11 +198,11 @@
   #define Z2_SERIAL_TX_PIN                  PD4
   #define Z2_SERIAL_RX_PIN      Z2_SERIAL_TX_PIN // TODO:其它轴(A、B、C轴)改名记得改埋哩个
 
-  #define E2_SERIAL_TX_PIN                  PD0
-  #define E2_SERIAL_RX_PIN      E2_SERIAL_TX_PIN
+  #define E1_SERIAL_TX_PIN                  PD0
+  #define E1_SERIAL_RX_PIN      E1_SERIAL_TX_PIN
 
-  #define E3_SERIAL_TX_PIN                  PD15
-  #define E3_SERIAL_RX_PIN      E3_SERIAL_TX_PIN
+  #define I_SERIAL_TX_PIN                  PD15
+  #define I_SERIAL_RX_PIN       I_SERIAL_TX_PIN
 
   #define E4_SERIAL_TX_PIN                  PD11
   #define E4_SERIAL_RX_PIN      E4_SERIAL_TX_PIN
