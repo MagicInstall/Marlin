@@ -353,8 +353,9 @@ void menu_motion() {
     GCODES_ITEM(MSG_MANUAL_PENDOWN, F("M280 P0 S50"));
   #endif
 
+  // wing 调平类的菜单移动到新增加的整备菜单内.
   // //
-  // // Level Bed
+  // // Level Bed 
   // //
   // #if ENABLED(AUTO_BED_LEVELING_UBL)
 

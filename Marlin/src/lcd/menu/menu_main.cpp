@@ -35,11 +35,6 @@
 #include "../../module/stepper.h"
 #include "../../sd/cardreader.h"
 
-#if HAS_LEVELING
-  // #include "../../module/planner.h"
-  #include "../../feature/bedlevel/bedlevel.h"
-#endif
-
 #if ENABLED(PSU_CONTROL)
   #include "../../feature/power.h"
 #endif
@@ -70,8 +65,6 @@
 #if ENABLED(GCODE_REPEAT_MARKERS)
   #include "../../feature/repeat.h"
 #endif
-
-
 
 void menu_tune();
 void menu_cancelobject();
@@ -239,14 +232,6 @@ void menu_configuration();
   #endif
 #endif
 
-// Wing
-
-#if ENABLED(AUTO_BED_LEVELING_UBL)
-  void _lcd_ubl_level_bed();
-#elif ENABLED(LCD_BED_LEVELING)
-  void menu_bed_leveling();
-#endif
-
 #if ENABLED(ASSISTED_TRAMMING_WIZARD)
   void goto_tramming_wizard();
 #endif
@@ -259,35 +244,36 @@ void menu_repair() {
   START_MENU();
   BACK_ITEM(MSG_MAIN_MENU);
   
-  //
-  // Level Bed
-  //
-  #if ENABLED(AUTO_BED_LEVELING_UBL)
+  //  wing  UBL 菜单单独移动到设置菜单内.
+  // //
+  // // Level Bed
+  // //
+  // #if ENABLED(AUTO_BED_LEVELING_UBL)
 
-    SUBMENU(MSG_UBL_LEVEL_BED, _lcd_ubl_level_bed);
+  //   SUBMENU(MSG_UBL_LEVEL_BED, _lcd_ubl_level_bed);
 
-  #elif ENABLED(LCD_BED_LEVELING)
+  // #elif ENABLED(LCD_BED_LEVELING)
 
-    if (!g29_in_progress)
-      SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
+  //   if (!g29_in_progress)
+  //     SUBMENU(MSG_BED_LEVELING, menu_bed_leveling);
 
-  #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
+  // #elif HAS_LEVELING && DISABLED(SLIM_LCD_MENUS)
 
-    #if DISABLED(PROBE_MANUALLY)
-      GCODES_ITEM(MSG_LEVEL_BED, F("G29N"));
-    #endif
+  //   #if DISABLED(PROBE_MANUALLY)
+  //     GCODES_ITEM(MSG_LEVEL_BED, F("G29N"));
+  //   #endif
 
-    if (all_axes_homed() && leveling_is_valid()) {
-      bool show_state = planner.leveling_active;
-      EDIT_ITEM(bool, MSG_BED_LEVELING, &show_state, _lcd_toggle_bed_leveling);
-    }
+  //   if (all_axes_homed() && leveling_is_valid()) {
+  //     bool show_state = planner.leveling_active;
+  //     EDIT_ITEM(bool, MSG_BED_LEVELING, &show_state, _lcd_toggle_bed_leveling);
+  //   }
 
-    #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
-      editable.decimal = planner.z_fade_height;
-      EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });
-    #endif
+  //   #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
+  //     editable.decimal = planner.z_fade_height;
+  //     EDIT_ITEM_FAST(float3, MSG_Z_FADE_HEIGHT, &editable.decimal, 0, 100, []{ set_z_fade_height(editable.decimal); });
+  //   #endif
 
-  #endif
+  // #endif
 
   //
   // Assisted Bed Tramming
