@@ -39,9 +39,10 @@ namespace Language_zh_CN {
   LSTR MSG_NO                             = _UxGT("否");
   LSTR MSG_BACK                           = _UxGT("返回");     // ”Back“
   LSTR MSG_MEDIA_ABORTING                 = _UxGT("放弃中...");
-  LSTR MSG_MEDIA_INSERTED                 = _UxGT("存储卡已插入");     // "Card inserted"
-  LSTR MSG_MEDIA_REMOVED                  = _UxGT("存储卡被拔出");     // "Card removed"
-  LSTR MSG_MEDIA_WAITING                  = _UxGT("等待存储器");
+  LSTR MSG_MEDIA_INSERTED                 = _UxGT("SD卡已插入");     // "Card inserted"
+  LSTR MSG_MEDIA_REMOVED                  = _UxGT("SD卡被拔出");     // "Card removed"
+  LSTR MSG_MEDIA_WAITING                  = _UxGT("等待SD卡");
+  LSTR MSG_MEDIA_INIT_FAIL                = _UxGT("SD卡初始化失败!");
   LSTR MSG_MEDIA_READ_ERROR               = _UxGT("存储器读取错误");
   LSTR MSG_MEDIA_USB_REMOVED              = _UxGT("USB设备已弹出");
   LSTR MSG_MEDIA_USB_FAILED               = _UxGT("USB启动错误");
@@ -78,7 +79,7 @@ namespace Language_zh_CN {
   LSTR MSG_ITERATION                      = _UxGT("G34 重复: %i");
   LSTR MSG_DECREASING_ACCURACY            = _UxGT("Z不平!");
   LSTR MSG_ACCURACY_ACHIEVED              = _UxGT("Z已调平");
-  LSTR MSG_LEVEL_BED_HOMING               = _UxGT("热床调平-XYZ回原点");     // "Homing XYZ"
+  LSTR MSG_LEVEL_BED_HOMING               = _UxGT("正在回原点...");     // "Homing XYZ"
   LSTR MSG_LEVEL_BED_WAITING              = _UxGT("单击开始热床调平");     // "Click to Begin"
   LSTR MSG_LEVEL_BED_NEXT_POINT           = _UxGT("下个热床调平点");     // "Next Point"
   LSTR MSG_LEVEL_BED_DONE                 = _UxGT("完成热床调平");     // "Leveling Done!"
@@ -92,7 +93,7 @@ namespace Language_zh_CN {
   LSTR MSG_ERR_M428_TOO_FAR               = _UxGT("Err: 太远了！");
   LSTR MSG_TRAMMING_WIZARD                = _UxGT("床角调平");
   LSTR MSG_SELECT_ORIGIN                  = _UxGT("选择测量点");
-  LSTR MSG_LAST_VALUE_SP                  = _UxGT("负值调松,正值调紧"); 
+  LSTR MSG_LAST_VALUE_SP                  = _UxGT("正调松,负调紧"); 
   #if HAS_PREHEAT
     LSTR MSG_PREHEAT_1                    = _UxGT("预热 ") PREHEAT_1_LABEL;     // "Preheat PREHEAT_2_LABEL"
     LSTR MSG_PREHEAT_1_H                  = _UxGT("预热 ") PREHEAT_1_LABEL " ~";     // "Preheat PREHEAT_2_LABEL"
