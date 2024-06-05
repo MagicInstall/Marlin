@@ -43,7 +43,7 @@ namespace Language_zh_CN {
   LSTR MSG_MEDIA_REMOVED                  = _UxGT("SD卡被拔出");     // "Card removed"
   LSTR MSG_MEDIA_WAITING                  = _UxGT("等待SD卡");
   LSTR MSG_MEDIA_INIT_FAIL                = _UxGT("SD卡初始化失败!");
-  LSTR MSG_MEDIA_READ_ERROR               = _UxGT("存储器读取错误");
+  LSTR MSG_MEDIA_READ_ERROR               = _UxGT("SD卡读取错误");
   LSTR MSG_MEDIA_USB_REMOVED              = _UxGT("USB设备已弹出");
   LSTR MSG_MEDIA_USB_FAILED               = _UxGT("USB启动错误");
   LSTR MSG_KILL_SUBCALL_OVERFLOW          = _UxGT("子响应溢出");
@@ -400,7 +400,7 @@ namespace Language_zh_CN {
   LSTR MSG_CANCEL_OBJECT                  = _UxGT("取消物体");
   LSTR MSG_CANCEL_OBJECT_N                = _UxGT("取消物体 {");
   LSTR MSG_OUTAGE_RECOVERY                = _UxGT("中断恢复");
-  LSTR MSG_MEDIA_MENU                     = _UxGT("从存储卡上打印");     // "Print from SD"
+  LSTR MSG_MEDIA_MENU                     = _UxGT("从SD卡上打印");     // "Print from SD"
   LSTR MSG_NO_MEDIA                       = _UxGT("无存储卡");     // "No SD card"
   LSTR MSG_DWELL                          = _UxGT("休眠中 ...");     // "Sleep..."
   LSTR MSG_USERWAIT                       = _UxGT("点击继续 ...");     // "Click to resume..."
