@@ -318,6 +318,10 @@ void menu_repair() {
     GCODES_ITEM(MSG_AUTO_CALIBRATE, F("G425"));
   #endif
 
+  #if ENABLED(EEPROM_SETTINGS)
+    ACTION_ITEM(MSG_STORE_EEPROM, ui.store_settings);
+  #endif
+
   END_MENU();
 }
 
