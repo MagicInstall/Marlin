@@ -650,7 +650,10 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
 
   if (!axes_should_home()) {
     // Move XY back to saved position
-    destination.set(resume_position.x, resume_position.y, current_position.z, current_position.e);
+    // wing: FIX 修复在3轴以上系统中E轴乱走的问题! destination.set(resume_position.x, resume_position.y, current_position.z, current_position.e);
+    destination.set(resume_position.x, resume_position.y, current_position.z);
+    destination.e = current_position.e; 
+
     prepare_internal_move_to_destination(NOZZLE_PARK_XY_FEEDRATE);
 
     // Move Z back to saved position
