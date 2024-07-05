@@ -275,6 +275,19 @@ void menu_repair() {
 
   // #endif
 
+  // Probe Offset Wizard
+  //
+  #if ENABLED(PROBE_OFFSET_WIZARD)
+    SUBMENU(MSG_PROBE_WIZARD, goto_probe_offset_wizard);
+  #endif
+
+  //
+  // Auto Z-Align
+  //
+  #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
+    GCODES_ITEM(MSG_AUTO_Z_ALIGN, F("G34"));
+  #endif
+
   //
   // Assisted Bed Tramming
   //
@@ -290,12 +303,6 @@ void menu_repair() {
     GCODES_ITEM(MSG_M48_TEST, F("G28O\nM48 P10"));
   #endif
 
-  // Probe Offset Wizard
-  //
-  #if ENABLED(PROBE_OFFSET_WIZARD)
-    SUBMENU(MSG_PROBE_WIZARD, goto_probe_offset_wizard);
-  #endif
-
   //
   // Probe Deploy/Stow
   //
@@ -303,13 +310,6 @@ void menu_repair() {
   //   GCODES_ITEM(MSG_MANUAL_DEPLOY, F("M401"));
   //   GCODES_ITEM(MSG_MANUAL_STOW, F("M402"));
   // #endif
-
-  //
-  // Auto Z-Align
-  //
-  #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
-    GCODES_ITEM(MSG_AUTO_Z_ALIGN, F("G34"));
-  #endif
 
   //
   // Auto-calibration
