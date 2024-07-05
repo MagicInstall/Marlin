@@ -1011,7 +1011,7 @@
    * Override with 'M422 S<index> X<pos> Y<pos>'.
    */
   // #define Z_STEPPER_ALIGN_XY { { 26.4, 184.1 }, { 198.6,  184.1 }/*, { 190, 190 }*/ } 旧头
-  #define Z_STEPPER_ALIGN_XY { { 30, 190.0 }, { 200.0, 190.0 } }
+  #define Z_STEPPER_ALIGN_XY { { 30, 200.0 }, { 200.0, 200.0 } }
 
   /**
    * Orientation for the automatically-calculated probe positions.
@@ -2763,8 +2763,8 @@
  */
 #define ADVANCED_PAUSE_FEATURE // 换料程序
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
-  #define PAUSE_PARK_RETRACT_FEEDRATE         25  // (mm/s) Initial retract feedrate.
-  #define PAUSE_PARK_RETRACT_LENGTH            5  // (mm) Initial retract.
+  #define PAUSE_PARK_RETRACT_FEEDRATE         15  // (mm/s) Initial retract feedrate.
+  #define PAUSE_PARK_RETRACT_LENGTH            0  // (mm) Initial retract. 
                                                   // This short retract is done immediately, before parking the nozzle.
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     25  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        50  // (mm/s^2) Lower acceleration may allow a faster feedrate.

@@ -179,7 +179,7 @@
  * Regardless of these settings the axes are internally named I, J, K, U, V, W.
  */
 #ifdef I_DRIVER_TYPE
-  #define AXIS4_NAME 'W' // :['A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS4_NAME 'I' // :['A', 'B', 'C', 'U', 'V', 'W']
   // #define AXIS4_ROTATES
 #endif
 #ifdef J_DRIVER_TYPE
@@ -1754,8 +1754,8 @@
 // @section geometry
 
 // The size of the printable area
-#define X_BED_SIZE 235
-#define Y_BED_SIZE 210 
+#define X_BED_SIZE 245
+#define Y_BED_SIZE 220 
 /* TODO: 记得改翻大 Z_STEPPER_ALIGN_XY 
  *       睇睇 NOZZLE_CLEAN_FEATURE 可可以实现换料痾屎功能？将Y size 加大啲等佢痾喺前边
  */
@@ -2378,7 +2378,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 0), (Y_MAX_POS - 10), 0 }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 0 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
   #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
