@@ -1152,7 +1152,9 @@ class Temperature {
      * Cooldown, as from the LCD. Disables all heaters and fans.
      */
     static void cooldown() {
-      zero_fan_speeds();
+      #if DISABLED(PRODMACH)  //  wing
+        zero_fan_speeds();
+      #endif
       disable_all_heaters();
     }
 

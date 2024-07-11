@@ -433,6 +433,9 @@ bool pause_print(const_float_t retract, const xyz_pos_t &park_point, const bool 
   // Save current position
   resume_position = current_position;
 
+  #if ENABLED(PRODMACH)
+    set_axis_homed(I_AXIS); //  wing: 让I轴不回原点也能触发do_park
+  #endif
   // Will the nozzle be parking?
   const bool do_park = !axes_should_home();
 
@@ -678,11 +681,13 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
       unscaled_e_move(-fwretract.settings.retract_length, fwretract.settings.retract_feedrate_mm_s);
   #endif
 
-  // If resume_position is negative
-  if (resume_position.e < 0) unscaled_e_move(resume_position.e, feedRate_t(PAUSE_PARK_RETRACT_FEEDRATE));
-  #ifdef ADVANCED_PAUSE_RESUME_PRIME
-    if (ADVANCED_PAUSE_RESUME_PRIME != 0)
-      unscaled_e_move(ADVANCED_PAUSE_RESUME_PRIME, feedRate_t(ADVANCED_PAUSE_PURGE_FEEDRATE));
+  #if DISABLED(PRODMACH) // wing: 不需要多余的动作
+    // If resume_position is negative
+    if (resume_position.e < 0) unscaled_e_move(resume_position.e, feedRate_t(PAUSE_PARK_RETRACT_FEEDRATE));
+    #ifdef ADVANCED_PAUSE_RESUME_PRIME
+      if (ADVANCED_PAUSE_RESUME_PRIME != 0)
+        unscaled_e_move(ADVANCED_PAUSE_RESUME_PRIME, feedRate_t(ADVANCED_PAUSE_PURGE_FEEDRATE));
+    #endif
   #endif
 
   // Now all extrusion positions are resumed and ready to be confirmed
