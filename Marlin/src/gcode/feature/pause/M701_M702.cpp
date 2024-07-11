@@ -55,6 +55,19 @@
  *  Default values are used for omitted arguments.
  */
 void GcodeSuite::M701() {
+
+  #if ENABLED(PRODMACH)
+    // 防止切刀档路   wing
+    // if (servo[CUTTING_SERVO_NUM].read() > SERVO_SEMI_OCCLUSION_ANGLE)
+    // {
+    //   servo[CUTTING_SERVO_NUM].move(SERVO_SEMI_OCCLUSION_ANGLE);
+    //   safe_delay(SERVO_AFTER_MOVING_DELAY);
+
+      servo[CUTTING_SERVO_NUM].move(0);
+      safe_delay(SERVO_AFTER_MOVING_DELAY);
+    // }
+  #endif
+
   xyz_pos_t park_point = NOZZLE_PARK_POINT;
 
   // Don't raise Z if the machine isn't homed
@@ -147,12 +160,6 @@ void GcodeSuite::M701() {
  */
 void GcodeSuite::M702() {
   xyz_pos_t park_point = NOZZLE_PARK_POINT;
-
-  #if ENABLED(PRODMACH)
-    // 防止切刀档路   wing
-    servo[CUTTING_SERVO_NUM].move(0);
-    safe_delay(SERVO_AFTER_MOVING_DELAY);
-  #endif
 
   // Don't raise Z if the machine isn't homed
   if (TERN0(NO_MOTION_BEFORE_HOMING, axes_should_home())) park_point.z = 0;

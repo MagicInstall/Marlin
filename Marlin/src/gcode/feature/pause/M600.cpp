@@ -140,9 +140,9 @@ void GcodeSuite::M600() {
     park_point += hotend_offset[active_extruder];
   #endif
 
-
   // 切断料丝   wing
   #if ENABLED(PRODMACH)
+      planner.synchronize();
       servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
       safe_delay(SERVO_AFTER_MOVING_DELAY);
       servo[CUTTING_SERVO_NUM].move(0);
