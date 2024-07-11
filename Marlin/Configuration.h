@@ -179,7 +179,7 @@
  * Regardless of these settings the axes are internally named I, J, K, U, V, W.
  */
 #ifdef I_DRIVER_TYPE
-  #define AXIS4_NAME 'I' // :['A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS4_NAME 'W' // :['A', 'B', 'C', 'U', 'V', 'W']
   // #define AXIS4_ROTATES
 #endif
 #ifdef J_DRIVER_TYPE
@@ -207,13 +207,13 @@
 
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
-#define EXTRUDERS 2
+#define EXTRUDERS 1
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-#define SINGLENOZZLE
+// #define SINGLENOZZLE
 
 // Save and restore temperature and fan speed on tool-change.
 // Set standby for the unselected tool with M104/106/109 T...
@@ -3545,7 +3545,15 @@
 
 // wing:
 // 启用PRODMACH 多色系统
+//
+// 如启用使用多色系统:
+//  1. 必须在Configuration_adv.h 文件中启用E_DUAL_STEPPER_DRIVERS 宏,
+//     以支持双E 轴电机;
+//  2. EXTRUDERS 必须是1;
+//  3. MIXING_EXTRUDER、SINGLENOZZLE 必须关闭;
+//
 #define PRODMACH
+
 #if ENABLED(PRODMACH)
 #define CUTTING_SERVO_NUM             1     // 切料舵机的索引号; 对于PRODMACH: 0号已经分配给BL touch
 #define SERVO_CUT_OFF_ANGLE           180   // 切断料丝的角度

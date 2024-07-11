@@ -888,7 +888,7 @@
 #endif
 
 // Drive the E axis with two synchronized steppers
-//#define E_DUAL_STEPPER_DRIVERS
+#define E_DUAL_STEPPER_DRIVERS  //  wing: PRODMACH 多色系统需要打开双E轴
 #if ENABLED(E_DUAL_STEPPER_DRIVERS)
   //#define INVERT_E1_VS_E0_DIR       // E direction signals are opposites
 #endif
@@ -1054,7 +1054,7 @@
 
   // On a 300mm bed a 5% grade would give a misalignment of ~1.5cm
   #define G34_MAX_GRADE              5    // (%) Maximum incline that G34 will handle
-  #define Z_STEPPER_ALIGN_ITERATIONS 8    // Number of iterations to apply during alignment
+  #define Z_STEPPER_ALIGN_ITERATIONS 10   // Number of iterations to apply during alignment
   #define Z_STEPPER_ALIGN_ACC        0.01 // Stop iterating early if the accuracy is better than this
   #define RESTORE_LEVELING_AFTER_G34      // Restore leveling after G34 is done?
 
