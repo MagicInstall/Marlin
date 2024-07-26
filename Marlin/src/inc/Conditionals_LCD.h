@@ -756,8 +756,10 @@
             #undef INVERT_E2_DIR
             #undef E2_DRIVER_TYPE
             #if E_STEPPERS <= 1
-              #undef INVERT_E1_DIR
-              #undef E1_DRIVER_TYPE
+              #if DISABLED(PRODMACH) // wing 
+                #undef INVERT_E1_DIR
+                #undef E1_DRIVER_TYPE
+              #endif
               #if E_STEPPERS == 0
                 #undef INVERT_E0_DIR
                 #undef E0_DRIVER_TYPE
