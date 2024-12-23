@@ -1225,7 +1225,7 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 50, 15 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 300, 300 }
 
 // #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1767,8 +1767,8 @@
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 210
-#define I_MIN_POS -500
-#define I_MAX_POS 500 // TODO: W轴上限
+#define I_MAX_POS 300 // wing: W轴上限
+#define I_MIN_POS (- I_MAX_POS)
 //#define J_MIN_POS 0
 //#define J_MAX_POS 50
 //#define K_MIN_POS 0
@@ -2226,7 +2226,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) , (20*60) }
+#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) , (50*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2377,11 +2377,11 @@
 #define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
-  // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 0 }
+  // Specify a park position as { X, Y, Z_raise }   wing: 停靠位置
+  #define NOZZLE_PARK_POINT { 239, (Y_MAX_POS), 0 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
   #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
-  #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
+  #define NOZZLE_PARK_XY_FEEDRATE 500   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE    5   // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
 
@@ -3559,5 +3559,7 @@
 #define SERVO_CUT_OFF_ANGLE           180   // 切断料丝的角度
 #define SERVO_SEMI_OCCLUSION_ANGLE    90    // 挤压到挤出臂半松开(轻轻咬住料丝),但刀片又完全碰不料丝的角度
 #define SERVO_AFTER_MOVING_DELAY      600   // (ms)舵机每次动作后接其它动作之间的延时
+
+#define LOADING_PARK_POINT_OFFSET     { 3.5, 0, 0 }   // 入料时的park point 偏移
 
 #endif
