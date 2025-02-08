@@ -195,8 +195,11 @@ void GcodeSuite::M702() {
   // Z axis lift
   if (parser.seenval('Z')) park_point.z = parser.linearval('Z');
 
-  // Show initial "wait for unload" message
-  ui.pause_show_message(PAUSE_MESSAGE_UNLOAD, PAUSE_MODE_UNLOAD_FILAMENT, target_extruder);
+  #if DISABLED(PRODMACH)
+    // Show initial "wait for unload" message
+    ui.pause_show_message(PAUSE_MESSAGE_UNLOAD, PAUSE_MODE_UNLOAD_FILAMENT, target_extruder);
+  #endif
+
 
   #if HAS_MULTI_EXTRUDER && (HAS_PRUSA_MMU1 || !HAS_MMU)
     // Change toolhead if specified
@@ -228,7 +231,7 @@ void GcodeSuite::M702() {
       servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
       safe_delay(SERVO_AFTER_MOVING_DELAY);
       servo[CUTTING_SERVO_NUM].move(0);
-      safe_delay(SERVO_AFTER_MOVING_DELAY);
+      safe_delay(SERVO_SEMI_OCCLUSION_ANGLE);
       #endif
 
       // Unload length

@@ -183,10 +183,12 @@ void menu_change_filament() {
         // Unload filament
         #if E_STEPPERS == 1
           FSTR_P const msg_unload = GET_TEXT_F(MSG_FILAMENTUNLOAD);
-          if (thermalManager.targetTooColdToExtrude(active_extruder))
-            SUBMENU_F(msg_unload, []{ _menu_temp_filament_op(PAUSE_MODE_UNLOAD_FILAMENT, 0); });
-          else
-            GCODES_ITEM_F(msg_unload, F("M702"));
+          #if DISABLED(PRODMACH)
+            if (thermalManager.targetTooColdToExtrude(active_extruder))
+              SUBMENU_F(msg_unload, []{ _menu_temp_filament_op(PAUSE_MODE_UNLOAD_FILAMENT, 0); });
+            else
+          #endif
+              GCODES_ITEM_F(msg_unload, F("M702"));
         #else
           #if ENABLED(FILAMENT_UNLOAD_ALL_EXTRUDERS)
             if (too_cold)
@@ -207,7 +209,7 @@ void menu_change_filament() {
             }
           }
         #endif
-      } // !printer_busy
+      } // printer_busy
     #endif
 
     // wing: 切刀舵机手动控制
