@@ -101,7 +101,7 @@
  * :[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 #define SERIAL_PORT_2 1
-#define BAUDRATE_2 500000   // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
+#define BAUDRATE_2 115200   // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000] Enable to override BAUDRATE
 
 /**
  * Select a third serial port on the board to use for communication with the host.
@@ -1218,7 +1218,7 @@
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.9, 159.9, 800, 281.75/*8mm挤出齿*/ } 旧头
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.9, 159.9, 800, 160, 814} 
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.9, 159.9, 800, 400, 814} 
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
@@ -2226,7 +2226,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) , (50*60) }
+#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) , (20*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2381,7 +2381,7 @@
   #define NOZZLE_PARK_POINT { 239, (Y_MAX_POS), 0 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
   #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
-  #define NOZZLE_PARK_XY_FEEDRATE 500   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
+  #define NOZZLE_PARK_XY_FEEDRATE 300   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE    5   // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
 
@@ -3555,11 +3555,17 @@
 #define PRODMACH
 
 #if ENABLED(PRODMACH)
+#define MMU_UART                      MYSERIAL2
+#define TOOLS_COUNT                   12    // 必须对应MMU固件的Configuration.h 中的设置.
 #define CUTTING_SERVO_NUM             1     // 切料舵机的索引号; 对于PRODMACH: 0号已经分配给BL touch
 #define SERVO_CUT_OFF_ANGLE           180   // 切断料丝的角度
 #define SERVO_SEMI_OCCLUSION_ANGLE    90    // 挤压到挤出臂半松开(轻轻咬住料丝),但刀片又完全碰不料丝的角度
 #define SERVO_AFTER_MOVING_DELAY      600   // (ms)舵机每次动作后接其它动作之间的延时
+#define PER_EXTRUSION_DISTANCE        26.0  // 移动选线头后预挤出到断料传感器的距离(mm)
+#define PER_EXTRUSION_FEEDRATE        15    // 预挤出的速率(mm/s)
+#define W_AXIS_FEEDRATE               50    // mm/s
 
-#define LOADING_PARK_POINT_OFFSET     { 3.5, 0, 0 }   // 入料时的park point 偏移
+#define CLEAN_NOZZLE_X_OFFSET         { 3.0, 6.0, 0 }   // 第一个点是刷料片穿孔的位置, 后面是入料后的喷头移动刷料的动作, 值是相对于NOZZLE_PARK_POINT 的偏移
+#define CLEAN_NOZZLE_POINT_FEEDRATE   50    // 清理喷头的X轴速率(mm/s)
 
 #endif

@@ -1441,7 +1441,7 @@
 // @section lcd
 
 #if HAS_MANUAL_MOVE_MENU
-  #define MANUAL_FEEDRATE { 50*60, 50*60, 5*60, 50*60, 25*30 } // (mm/min) Feedrates for manual moves along X, Y, Z, I, E from panel
+  #define MANUAL_FEEDRATE { 50*60, 50*60, 5*60, 25*60, 15*60 } // (mm/min) Feedrates for manual moves along X, Y, Z, I, E from panel
   #define FINE_MANUAL_MOVE 0.01    // (mm) Smallest manual move (< 0.1mm) applying to Z on most machines
   #if IS_ULTIPANEL
     #define MANUAL_E_MOVES_RELATIVE // Display extruder move distance rather than "position"
@@ -2773,7 +2773,7 @@
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
   #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE  15  // (mm/s) Slow move when starting load.
-  #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH    25  // (mm) Slow length, to allow time to insert material.
+  #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0  // (mm) Slow length, to allow time to insert material.
                                                   // 0 to disable start loading and skip to fast load only
   #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE  35  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     50  // (mm/s^2) Lower acceleration may allow a faster feedrate.
@@ -2782,7 +2782,7 @@
                                                   //   For direct drive, the full length of the nozzle.
   //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
   #define ADVANCED_PAUSE_PURGE_FEEDRATE        5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
-  #define ADVANCED_PAUSE_PURGE_LENGTH         70  // (mm) Length to extrude after loading.
+  #define ADVANCED_PAUSE_PURGE_LENGTH         35  // (mm) Length to extrude after loading.
                                                   //   Set to 0 for manual extrusion.
                                                   //   Filament can be extruded repeatedly from the Filament Change menu
                                                   //   until extrusion is consistent, and to purge old filament.
@@ -3293,7 +3293,7 @@
     //#define Z2_STALL_SENSITIVITY Z_STALL_SENSITIVITY
     //#define Z3_STALL_SENSITIVITY Z_STALL_SENSITIVITY
     //#define Z4_STALL_SENSITIVITY Z_STALL_SENSITIVITY
-    #define I_STALL_SENSITIVITY  8 // TMC 无传感器回原点灵敏度
+    #define I_STALL_SENSITIVITY  65 // TMC 无传感器回原点灵敏度
     //#define J_STALL_SENSITIVITY  8
     //#define K_STALL_SENSITIVITY  8
     //#define U_STALL_SENSITIVITY  8
@@ -3828,7 +3828,7 @@
 #define GCODE_MOTION_MODES  // Remember the motion mode (G0 G1 G2 G3 G5 G38.X) and apply for X Y Z E F, etc.
 
 // Enable and set a (default) feedrate for all G0 moves
-#define G0_FEEDRATE 500 // (mm/min)
+#define G0_FEEDRATE 6000 // (mm/min)
 #ifdef G0_FEEDRATE
   #define VARIABLE_G0_FEEDRATE // The G0 feedrate is set by F in G0 motion mode
 #endif
