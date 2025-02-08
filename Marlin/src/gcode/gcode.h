@@ -994,7 +994,7 @@ private:
     static void M402();
   #endif
 
-  #if HAS_PRUSA_MMU2
+  #if HAS_PRUSA_MMU2 || ENABLED(PRODMACH)
     static void M403();
   #endif
 

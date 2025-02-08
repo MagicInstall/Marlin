@@ -140,15 +140,6 @@ void GcodeSuite::M600() {
     park_point += hotend_offset[active_extruder];
   #endif
 
-  // 切断料丝   wing
-  #if ENABLED(PRODMACH)
-      planner.synchronize();
-      servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
-      safe_delay(SERVO_AFTER_MOVING_DELAY);
-      servo[CUTTING_SERVO_NUM].move(0);
-      safe_delay(SERVO_AFTER_MOVING_DELAY);
-  #endif
-
   // Unload filament
   // For MMU2, when enabled, reset retract value so it doesn't mess with MMU filament handling
   const float unload_length = standardM600 ? -ABS(parser.axisunitsval('U', E_AXIS, fc_settings[active_extruder].unload_length)) : 0.5f;

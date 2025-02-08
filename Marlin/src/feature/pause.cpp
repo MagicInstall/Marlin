@@ -37,6 +37,7 @@
 #include "../module/planner.h"
 #include "../module/printcounter.h"
 #include "../module/temperature.h"
+#include "../module/servo.h"
 
 #if HAS_EXTRUDERS
   #include "../module/stepper.h"
@@ -236,8 +237,6 @@ bool load_filament(const_float_t slow_load_length/*=0*/, const_float_t fast_load
 
   TERN_(MPCTEMP, MPC::e_paused = true);
 
-  // Slow Load filament
-  if (slow_load_length) unscaled_e_move(slow_load_length, FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE);
 
   // Fast Load Filament
   if (fast_load_length) {
@@ -252,6 +251,9 @@ bool load_filament(const_float_t slow_load_length/*=0*/, const_float_t fast_load
       planner.settings.retract_acceleration = saved_acceleration;
     #endif
   }
+  
+  // Slow Load filament
+  if (slow_load_length) unscaled_e_move(slow_load_length, FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE);
 
   #if ENABLED(DUAL_X_CARRIAGE)      // Tie the two extruders movement back together.
     set_duplication_enabled(saved_ext_dup_mode, saved_ext);
@@ -346,10 +348,13 @@ bool unload_filament(const_float_t unload_length, const bool show_lcd/*=false*/,
     constexpr float mix_multiplier = 1.0f;
   #endif
 
+  // wing: 退线不需要检查喷头
+  #if DISABLED(PRODMACH)
   if (!ensure_safe_temperature(false, mode)) {
     if (show_lcd) ui.pause_show_message(PAUSE_MESSAGE_STATUS);
     return false;
   }
+  #endif
 
   if (show_lcd) ui.pause_show_message(PAUSE_MESSAGE_UNLOAD, mode);
 
@@ -433,10 +438,10 @@ bool pause_print(const_float_t retract, const xyz_pos_t &park_point, const bool 
   // Save current position
   resume_position = current_position;
 
+  // Will the nozzle be parking?
   #if ENABLED(PRODMACH)
     set_axis_homed(I_AXIS); //  wing: 让I轴不回原点也能触发do_park
   #endif
-  // Will the nozzle be parking?
   const bool do_park = !axes_should_home();
 
   #if ENABLED(POWER_LOSS_RECOVERY)
@@ -450,6 +455,18 @@ bool pause_print(const_float_t retract, const xyz_pos_t &park_point, const bool 
 
   #if ENABLED(ADVANCED_PAUSE_FANS_PAUSE) && HAS_FAN
     thermalManager.set_fans_paused(true);
+  #endif
+
+  // 切断料丝   wing
+  #if ENABLED(PRODMACH)
+    if (retract || unload_length)
+    {
+        planner.synchronize();
+        servo[CUTTING_SERVO_NUM].move(SERVO_CUT_OFF_ANGLE);
+        safe_delay(SERVO_AFTER_MOVING_DELAY);
+        servo[CUTTING_SERVO_NUM].move(0);
+        safe_delay(SERVO_AFTER_MOVING_DELAY);
+    }
   #endif
 
   // Initial retract before move to filament change position

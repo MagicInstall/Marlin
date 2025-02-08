@@ -237,6 +237,10 @@
   #include "feature/mmu/mmu2.h"
 #endif
 
+#if ENABLED(PRODMACH)
+  #include "feature/mmu/pmmmu.h"
+#endif
+
 #if ENABLED(PASSWORD_FEATURE)
   #include "feature/password/password.h"
 #endif
@@ -1599,6 +1603,10 @@ void setup() {
 
   #if HAS_PRUSA_MMU2
     SETUP_RUN(mmu2.init());
+  #endif
+
+  #if ENABLED(PRODMACH)
+    SETUP_RUN(pmmmu.init());
   #endif
 
   #if ENABLED(IIC_BL24CXX_EEPROM)
