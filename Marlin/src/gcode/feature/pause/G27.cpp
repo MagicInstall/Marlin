@@ -32,6 +32,10 @@
  * G27: Park the nozzle
  */
 void GcodeSuite::G27() {
+  #if ENABLED(PRODMACH)
+    set_axis_homed(I_AXIS); //  wing: 让I轴不回原点也能运行
+  #endif  
+    
   // Don't allow nozzle parking without homing first
   if (homing_needed_error()) return;
   nozzle.park(parser.ushortval('P'));
