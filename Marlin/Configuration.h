@@ -1225,7 +1225,7 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 300, 300 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 300, 50 }
 
 // #define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -1238,7 +1238,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 300, 300, 100, 100, 100}
+#define DEFAULT_MAX_ACCELERATION      { 300, 300, 100, 100, 50}
 
 // #define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1834,11 +1834,11 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-#define FILAMENT_RUNOUT_SENSOR // TODO: 断料检测
+#define FILAMENT_RUNOUT_SENSOR // wing: 断料检测
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
   #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-                                          // TODO : Marlin 只允许一个挤出机对应一个断料传感器, 在做前后双E轴嘅时候再整多传感器...
+                                          // wing : Marlin 只允许一个挤出机对应一个断料传感器
 
   #define FIL_RUNOUT_STATE     HIGH       // Pin state indicating that filament is NOT present.
   #define FIL_RUNOUT_PULLUP               // Use internal pullup for filament runout pins.
@@ -1847,8 +1847,8 @@
                                           // This is automatically enabled for MIXING_EXTRUDERs.
 
   // Override individually if the runout sensors vary
-  //#define FIL_RUNOUT1_STATE LOW
-  //#define FIL_RUNOUT1_PULLUP
+  // #define FIL_RUNOUT1_STATE    HIGH
+  // #define FIL_RUNOUT1_PULLUP
   //#define FIL_RUNOUT1_PULLDOWN
 
   //#define FIL_RUNOUT2_STATE LOW
@@ -1882,7 +1882,8 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #define FILAMENT_RUNOUT_SCRIPT "M600 T%c"
+  // wing:PRODMACH 不使用这个宏
+  // #define FILAMENT_RUNOUT_SCRIPT "M600 T%c"
 
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
@@ -3555,17 +3556,45 @@
 #define PRODMACH
 
 #if ENABLED(PRODMACH)
-#define MMU_UART                      MYSERIAL2
+// #define MMU_UART                      MYSERIAL2
+#define MMU_RUNOUT_PIN                PC3 
+#define MMU_RUNOUT_STATE              HIGH
+#define MMU_RUNOUT_PULLUP
+// #define MMU_RUNOUT2_PULLDOWN
+
 #define TOOLS_COUNT                   12    // 必须对应MMU固件的Configuration.h 中的设置.
 #define CUTTING_SERVO_NUM             1     // 切料舵机的索引号; 对于PRODMACH: 0号已经分配给BL touch
 #define SERVO_CUT_OFF_ANGLE           180   // 切断料丝的角度
 #define SERVO_SEMI_OCCLUSION_ANGLE    90    // 挤压到挤出臂半松开(轻轻咬住料丝),但刀片又完全碰不料丝的角度
 #define SERVO_AFTER_MOVING_DELAY      600   // (ms)舵机每次动作后接其它动作之间的延时
-#define PER_EXTRUSION_DISTANCE        26.0  // 移动选线头后预挤出到断料传感器的距离(mm)
-#define PER_EXTRUSION_FEEDRATE        15    // 预挤出的速率(mm/s)
 #define W_AXIS_FEEDRATE               50    // mm/s
 
-#define CLEAN_NOZZLE_X_OFFSET         { 3.0, 6.0, 0 }   // 第一个点是刷料片穿孔的位置, 后面是入料后的喷头移动刷料的动作, 值是相对于NOZZLE_PARK_POINT 的偏移
-#define CLEAN_NOZZLE_POINT_FEEDRATE   50    // 清理喷头的X轴速率(mm/s)
+/*
+ * 由于铁氟龙管的间隙影响, 每次装线的实际长度可能会有所不同, 
+ * 装线分为了几个阶段:
+ * 1. 从线夹到切换头中断料传感器的距离
+ * 2. 中间一段固定长度的距离, 此阶段没有检测机制
+ * 3. 余下的长度使用小距离步进挤出料线, 直到打印头端断料传感器检测到料丝
+ * 4. 最后再挤出到切刀的位置
+ * 5. 清理喷头(由 Configuration_adv.h 中的 ADVANCED_PAUSE_PURGE_XXX 定义)
+ */ 
+#define TO_SWITCH_HEAD_DISTANCE       26.0      // 从线夹头进线到切换头中断料传感器的距离(mm)
+#define FROM_SWITCH_HEAD_DISTANCE     21.0      // 从切换头中断料传感器退回到线夹头的距离(mm)
+#define FIXED_LENGTH                  1050      // 中间一段固定长度的距离(mm)
+#define SMALL_FEED_DISTANCE           1.0       // 每次小步进挤出料线(mm)
+#define TO_CUTTER_DISTANCE            4.0       // 到切刀的位置(mm)
+#define MMU_SLOW_FEEDRATE             15        // 阶段1、3、4的慢速挤出速率(mm/s)
+#define MMU_FAST_FEEDRATE             50        // 阶段2的快速挤出速率(mm/s)
 
+#define CLEAN_NOZZLE_X_OFFSET         { 3.0, 6.0, -2.0, 0 } // 第一个点是刷料片穿孔的位置, 后面是入料后的喷头移动刷料的动作, 值是相对于NOZZLE_PARK_POINT.x 的偏移
+#define CLEAN_NOZZLE_FEEDRATE         500       // 清理喷头的X轴速率(mm/s)
+
+#define PER_PURGE_LENGTH_MAX          40.0      // 每次清除喷头的最大长度(mm); 取决于废料槽的容量.
+#define BEFORE_PURGE_LENGTH           35.0      // 触发断料事件时,先清除余料的长度(mm);需略大于挤出端传感器到挤出齿轮的距离,保证消除过后挤出齿轮已经咬不住余下的料丝
+
+#define MMU_FORWARD_DISTANCE    {   0.8,  20.4,  20.4,  20.4,  30.6,  20.4,  20.2,  20.4,  31.1,  20.6,  20.5, 20.4} // 第一个槽位的距离是从W轴原点开始计算
+#define MMU_BACKWARD_DISTANCE   { -20.4, -20.4, -20.4, -30.6, -20.4, -20.2, -20.4, -31.1, -20.6, -20.5, -20.4, 0.0}
+// #define MMU_LOAD_LENGTH         { 1105, 1100, 1105, 1105, 1105, 1105, 1105, 1106, 1105, 1105, 1105, 1105}
+// #define MMU_UNLOAD_LENGTH       { 1105, 1092, 1105, 1105, 1105, 1105, 1105, 1102, 1105, 1105, 1105, 1105}
+// #define MMU_FILAMENT_BACKUP     {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
 #endif

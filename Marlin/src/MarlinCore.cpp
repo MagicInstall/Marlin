@@ -1605,10 +1605,6 @@ void setup() {
     SETUP_RUN(mmu2.init());
   #endif
 
-  #if ENABLED(PRODMACH)
-    SETUP_RUN(pmmmu.init());
-  #endif
-
   #if ENABLED(IIC_BL24CXX_EEPROM)
     BL24CXX::init();
     const uint8_t err = BL24CXX::check();
@@ -1664,6 +1660,10 @@ void setup() {
 
   #if ENABLED(BD_SENSOR)
     SETUP_RUN(bdl.init(I2C_BD_SDA_PIN, I2C_BD_SCL_PIN, I2C_BD_DELAY));
+  #endif
+
+  #if ENABLED(PRODMACH)
+    SETUP_RUN(pmmmu.init());
   #endif
 
   marlin_state = MF_RUNNING;

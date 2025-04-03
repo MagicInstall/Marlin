@@ -49,8 +49,8 @@
 //
 // Filament Runout Sensors 断料检测
 //
-#define FIL_RUNOUT_PIN                      PC2 // wing
-#define FIL_RUNOUT2_PIN                     PC3 // wing
+#define FIL_RUNOUT_PIN                      PC2 // wing (热端)
+#define FIL_RUNOUT2_PIN                     PC3 // wing (AMS端) 这里只是表示使用IO, 此宏会被SanityCheck.h 屏蔽, 实际设置在Configuration.h 中.
 
 //
 // MKS WIFI MODULE

@@ -1216,7 +1216,7 @@ template<typename TMC>
 static bool test_connection(TMC &st) {
   SERIAL_ECHOPGM("Testing ");
   st.printLabel();
-  SERIAL_ECHOPGM(" connection... ");
+  SERIAL_ECHOPGM(" connection... \n");
   const uint8_t test_result = st.test_connection();
 
   if (test_result > 0) SERIAL_ECHOPGM("Error: All ");

@@ -33,6 +33,12 @@
 #include "../../module/planner.h"
 #include "../../module/stepper.h"
 
+// wing
+#if ENABLED(LCD_ENDSTOP_TEST)
+  #include "../../module/endstops.h"
+  #define HAS_DEBUG_MENU EITHER(LCD_PROGRESS_BAR_TEST, LCD_ENDSTOP_TEST)
+#endif
+
 #if DISABLED(NO_VOLUMETRICS)
   #include "../../gcode/parser.h"
 #endif
@@ -137,7 +143,7 @@ void menu_backlash();
     #endif
 
     #if ENABLED(ADVANCED_PAUSE_FEATURE)
-      constexpr float extrude_maxlength = TERN(PREVENT_LENGTHY_EXTRUDE, EXTRUDE_MAXLENGTH, 999);
+      constexpr float extrude_maxlength = TERN(PREVENT_LENGTHY_EXTRUDE, EXTRUDE_MAXLENGTH, 9999);
 
       EDIT_ITEM_FAST(float4, MSG_FILAMENT_UNLOAD, &fc_settings[active_extruder].unload_length, 0, extrude_maxlength);
       #if HAS_MULTI_EXTRUDER
@@ -657,6 +663,135 @@ void menu_advanced_steps_per_mm() {
   END_MENU();
 }
 
+// wing
+#if ENABLED(LCD_PROGRESS_BAR_TEST)
+
+  #include "../lcdprint.h"
+
+  static void progress_bar_test() {
+    static int8_t bar_percent = 0;
+    if (ui.use_click()) {
+      ui.goto_previous_screen();
+      TERN_(HAS_MARLINUI_HD44780, ui.set_custom_characters(CHARSET_MENU));
+      return;
+    }
+    bar_percent += (int8_t)ui.encoderPosition;
+    LIMIT(bar_percent, 0, 100);
+    ui.encoderPosition = 0;
+    MenuItem_static::draw(0, GET_TEXT_F(MSG_PROGRESS_BAR_TEST), SS_DEFAULT|SS_INVERT);
+    lcd_put_int((LCD_WIDTH) / 2 - 2, LCD_HEIGHT - 2, bar_percent); lcd_put_u8str(F("%"));
+    lcd_moveto(0, LCD_HEIGHT - 1); ui.draw_progress_bar(bar_percent);
+  }
+
+  void _progress_bar_test() {
+    ui.goto_screen(progress_bar_test);
+    TERN_(HAS_MARLINUI_HD44780, ui.set_custom_characters(CHARSET_INFO));
+  }
+
+#endif // LCD_PROGRESS_BAR_TEST
+
+// wing
+#if ENABLED(LCD_ENDSTOP_TEST)
+
+  #include "../lcdprint.h"
+
+  #define __STOP_ITEM(F,S) PSTRING_ITEM_F_P(F, TEST(stops, S) ? PSTR(STR_ENDSTOP_HIT) : PSTR(STR_ENDSTOP_OPEN), SS_FULL)
+  #define _STOP_ITEM(L,S) __STOP_ITEM(F(L), S)
+  #define STOP_ITEM(A,I) _STOP_ITEM(STRINGIFY(A) STRINGIFY(I) " " TERN(A##_HOME_TO_MAX, "Max", "Min"), A##I##_ENDSTOP)
+  #define FIL_ITEM(N) PSTRING_ITEM_N_P(N-1, MSG_FILAMENT_EN, (READ(FIL_RUNOUT##N##_PIN) != FIL_RUNOUT##N##_STATE) ? PSTR("PRESENT") : PSTR("out"), SS_FULL);
+
+  static void endstop_test() {
+    if (ui.use_click()) {
+      ui.goto_previous_screen();
+      //endstops.enable_globally(false);
+      return;
+    }
+    TemporaryGlobalEndstopsState temp(true);
+    ui.defer_status_screen(true);
+    const Endstops::endstop_mask_t stops = endstops.state();
+
+    START_SCREEN();
+    STATIC_ITEM_F(GET_TEXT_F(MSG_ENDSTOP_TEST), SS_DEFAULT|SS_INVERT);
+
+    #if HAS_X_ENDSTOP
+      STOP_ITEM(X,);
+      #if ENABLED(X_DUAL_ENDSTOPS)
+        STOP_ITEM(X,2);
+      #endif
+    #endif
+    #if HAS_Y_ENDSTOP
+      STOP_ITEM(Y,);
+      #if ENABLED(Y_DUAL_ENDSTOPS)
+        STOP_ITEM(Y,2);
+      #endif
+    #endif
+    #if HAS_Z_ENDSTOP
+      STOP_ITEM(Z,);
+      #if ENABLED(Z_MULTI_ENDSTOPS)
+        STOP_ITEM(Z,2);
+        #if NUM_Z_STEPPERS >= 3
+          STOP_ITEM(Z,3);
+          #if NUM_Z_STEPPERS >= 4
+            STOP_ITEM(Z,4);
+          #endif
+        #endif
+      #endif
+    #endif
+    #if HAS_I_ENDSTOP
+      STOP_ITEM(I,);
+    #endif
+    #if HAS_J_ENDSTOP
+      STOP_ITEM(J,);
+    #endif
+    #if HAS_K_ENDSTOP
+      STOP_ITEM(K,);
+    #endif
+    #if HAS_U_ENDSTOP
+      STOP_ITEM(U,);
+    #endif
+    #if HAS_V_ENDSTOP
+      STOP_ITEM(V,);
+    #endif
+    #if HAS_W_ENDSTOP
+      STOP_ITEM(W,);
+    #endif
+    #if HAS_BED_PROBE && !HAS_DELTA_SENSORLESS_PROBING
+      __STOP_ITEM(GET_TEXT_F(MSG_Z_PROBE), Z_MIN_PROBE);
+    #endif
+    #if ENABLED(FILAMENT_RUNOUT_SENSOR)
+      REPEAT_1(NUM_RUNOUT_SENSORS, FIL_ITEM)
+    #endif
+    #if ENABLED(PRODMACH)
+      PSTRING_ITEM_N_P(1, MSG_FILAMENT_EN, (READ(MMU_RUNOUT_PIN) != MMU_RUNOUT_STATE) ? PSTR("PRESENT") : PSTR("out"), SS_FULL);
+    #endif
+
+    END_SCREEN();
+    ui.refresh(LCDVIEW_CALL_REDRAW_NEXT);
+  }
+
+#endif // LCD_ENDSTOP_TEST
+
+// wing
+#if HAS_DEBUG_MENU
+
+  void menu_debug() {
+    START_MENU();
+
+    BACK_ITEM(MSG_CONFIGURATION);
+
+    #if ENABLED(LCD_PROGRESS_BAR_TEST)
+      SUBMENU(MSG_PROGRESS_BAR_TEST, _progress_bar_test);
+    #endif
+
+    #if ENABLED(LCD_ENDSTOP_TEST)
+      SUBMENU(MSG_ENDSTOP_TEST, endstop_test);
+    #endif
+
+    END_MENU();
+  }
+
+#endif
+
 void menu_advanced_settings() {
   const bool is_busy = printer_busy();
 
@@ -769,16 +904,23 @@ void menu_advanced_settings() {
     SUBMENU(MSG_PASSWORD_SETTINGS, password.access_menu_password);
   #endif
 
-  #if ENABLED(EEPROM_SETTINGS) && DISABLED(SLIM_LCD_MENUS)
-    CONFIRM_ITEM(MSG_INIT_EEPROM,
-      MSG_BUTTON_INIT, MSG_BUTTON_CANCEL,
-      ui.init_eeprom, nullptr,
-      GET_TEXT_F(MSG_INIT_EEPROM), (const char *)nullptr, F("?")
-    );
+  //wing
+  #if HAS_DEBUG_MENU
+    SUBMENU(MSG_DEBUG_MENU, menu_debug);
   #endif
 
   const bool busy = printer_busy();
-  if (!busy) ACTION_ITEM(MSG_RESTORE_DEFAULTS, ui.reset_settings);
+  if (!busy) {
+    #if ENABLED(EEPROM_SETTINGS) && DISABLED(SLIM_LCD_MENUS)
+      CONFIRM_ITEM(MSG_INIT_EEPROM,
+        MSG_BUTTON_INIT, MSG_BUTTON_CANCEL,
+        ui.init_eeprom, nullptr,
+        GET_TEXT_F(MSG_INIT_EEPROM), (const char *)nullptr, F("?")
+      );
+    #endif
+
+    ACTION_ITEM(MSG_RESTORE_DEFAULTS, ui.reset_settings);
+  }
 
   END_MENU();
 }

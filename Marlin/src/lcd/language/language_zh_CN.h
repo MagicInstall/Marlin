@@ -22,6 +22,14 @@
 #pragma once
 
 /**
+ * 中文字库更新命令:
+ *   cd 到Marlin目录下的Marlin目录,运行genallfont.sh脚本
+ * (bash) 
+cd Marlin/
+../buildroot/share/fonts/genallfont.sh
+ */
+
+/**
  * Simplified Chinese
  *
  * LCD Menu Messages
@@ -355,8 +363,8 @@ namespace Language_zh_CN {
   LSTR MSG_VOLUMETRIC_ENABLED             = _UxGT("E 体积速度 mm3") SUPERSCRIPT_THREE;     // "E in mm3" volumetric_enabled
   LSTR MSG_VOLUMETRIC_LIMIT               = _UxGT("E 体积速度限制 mm3") SUPERSCRIPT_THREE;
   LSTR MSG_VOLUMETRIC_LIMIT_E             = _UxGT("E 限制 *");
-  LSTR MSG_FILAMENT_DIAM                  = _UxGT("丝料直径");     // "Fil. Dia."
-  LSTR MSG_FILAMENT_DIAM_E                = _UxGT("丝料直径 *");
+  LSTR MSG_FILAMENT_DIAM                  = _UxGT("料丝直径");     // "Fil. Dia."
+  LSTR MSG_FILAMENT_DIAM_E                = _UxGT("料丝直径 *");
   LSTR MSG_FILAMENT_UNLOAD                = _UxGT("卸载 mm");     // "Unload mm"
   LSTR MSG_FILAMENT_LOAD                  = _UxGT("装载 mm");     // "Load mm"
   LSTR MSG_ADVANCE_K                      = _UxGT("压力提前 K");
@@ -423,8 +431,8 @@ namespace Language_zh_CN {
   LSTR MSG_FILAMENT_SWAP_LENGTH           = _UxGT("交换长度");
   LSTR MSG_FILAMENT_SWAP_EXTRA            = _UxGT("额外的交换");
   LSTR MSG_FILAMENT_PURGE_LENGTH          = _UxGT("清洗长度");
-  LSTR MSG_TOOL_CHANGE                    = _UxGT("工具交换");
-  LSTR MSG_TOOL_CHANGE_ZLIFT              = _UxGT("工具交换Z举升");
+  LSTR MSG_TOOL_CHANGE                    = _UxGT("切换料槽");     // "Tool change"
+  LSTR MSG_TOOL_CHANGE_ZLIFT              = _UxGT("切换料槽Z举升");    // "Tool Z lift"
   LSTR MSG_SINGLENOZZLE_PRIME_SPEED       = _UxGT("进给速度");
   LSTR MSG_SINGLENOZZLE_RETRACT_SPEED     = _UxGT("回抽速度");
   LSTR MSG_FILAMENT_PARK_ENABLED          = _UxGT("停靠喷头");
@@ -617,7 +625,7 @@ namespace Language_zh_CN {
     LSTR MSG_ADVANCED_PAUSE_WAITING       = _UxGT(MSG_2_LINE("按下按钮", "恢复打印"));
     LSTR MSG_PAUSE_PRINT_PARKING          = _UxGT(MSG_1_LINE("停靠中..."));
     LSTR MSG_FILAMENT_CHANGE_INIT         = _UxGT(MSG_3_LINE("等待开始", "丝料", "变更"));     // "Wait for start of the filament change"
-    LSTR MSG_FILAMENT_CHANGE_INSERT       = _UxGT(MSG_3_LINE("插入料", "并按下按钮", "以继续"));
+    LSTR MSG_FILAMENT_CHANGE_INSERT       = _UxGT(MSG_3_LINE("插入料", "按下按钮", "进料"));
     LSTR MSG_FILAMENT_CHANGE_HEAT         = _UxGT(MSG_2_LINE("按下按钮来", "加热喷嘴."));     // "Press button to heat nozzle."
     LSTR MSG_FILAMENT_CHANGE_HEATING      = _UxGT(MSG_2_LINE("加热喷嘴", "请等待 ..."));     // "Heating nozzle Please wait..."
     LSTR MSG_FILAMENT_CHANGE_UNLOAD       = _UxGT(MSG_2_LINE("等待", "卸下丝料"));     // "Wait for filament unload"
@@ -667,4 +675,15 @@ namespace Language_zh_CN {
   LSTR MSG_SOUND                          = _UxGT("喇叭");
 
   LSTR MSG_SERVO_ANGLE                    = _UxGT("舵机角度");
+  LSTR MSG_BACKUP_SLOT                    = _UxGT("备用槽");
+  LSTR MSG_BACKUP_SLOT_N                  = _UxGT("槽{的备用槽");
+  LSTR MSG_FORWARD_DISTANCE               = _UxGT("W轴前进距离");
+  LSTR MSG_FORWARD_DISTANCE_N             = _UxGT("槽{到前一槽距离");
+  LSTR MSG_BACKWARD_DISTANCE              = _UxGT("W轴后退距离");
+  LSTR MSG_BACKWARD_DISTANCE_N            = _UxGT("前一槽到槽{距离");
+  // LSTR MSG_FILAMENT_UNLOAD_N              = _UxGT("卸载%i槽 mm");     
+  // LSTR MSG_FILAMENT_LOAD_N                = _UxGT("装载%i槽 mm");     
+  LSTR MSG_FIXED_LENGTH                   = _UxGT("软管长度");
+  LSTR MSG_PURGE_LENGTH_WIZARD            = _UxGT("清洗长度向导");
+  LSTR MSG_RESET_TOOL                     = _UxGT("重置切换头位置");
 }

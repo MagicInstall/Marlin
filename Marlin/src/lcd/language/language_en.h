@@ -914,6 +914,16 @@ namespace Language_en {
   LSTR DGUS_MSG_READ_EEPROM_FAILED        = _UxGT("EEPROM read failed");
   LSTR DGUS_MSG_FILAMENT_RUNOUT           = _UxGT("Filament runout E%d");
 
-  LSTR MSG_SERVO_ANGLE                    = _UxGT("Servo angle");
-
+  LSTR MSG_SERVO_ANGLE                    = _UxGT("Servo Angle");
+  LSTR MSG_BACKUP_SLOT                    = _UxGT("Backup Slot");
+  LSTR MSG_BACKUP_SLOT_N                  = _UxGT("Slot{ Backup");
+  LSTR MSG_FORWARD_DISTANCE               = _UxGT("W-Axis Fwd Dist");
+  LSTR MSG_FORWARD_DISTANCE_N             = _UxGT("Prev->Dist{");
+  LSTR MSG_BACKWARD_DISTANCE              = _UxGT("W-Axis Bwd Dist");
+  LSTR MSG_BACKWARD_DISTANCE_N            = _UxGT("Dist{ ->Prev");
+  // LSTR MSG_FILAMENT_UNLOAD_N              = _UxGT("Unload%d mm");
+  // LSTR MSG_FILAMENT_LOAD_N                = _UxGT("Load%d mm");
+  LSTR MSG_FIXED_LENGTH                   = _UxGT("Teflon Length");
+  LSTR MSG_PURGE_LENGTH_WIZARD            = _UxGT("Purge Length Wizard");
+  LSTR MSG_RESET_TOOL                     = _UxGT("Reset Tool");
 }

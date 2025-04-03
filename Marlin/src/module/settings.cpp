@@ -36,7 +36,7 @@
  */
 
 // Change EEPROM version if the structure changes
-#define EEPROM_VERSION "V87"
+#define EEPROM_VERSION "V88"
 #define EEPROM_OFFSET 100
 
 // Check the integrity of data offsets.
@@ -169,6 +169,10 @@
 #if DGUS_LCD_UI_MKS
   #include "../lcd/extui/dgus/DGUSScreenHandler.h"
   #include "../lcd/extui/dgus/DGUSDisplayDef.h"
+#endif
+
+#if ENABLED(PRODMACH)
+  #include "../feature/mmu/pmmmu.h"
 #endif
 
 #pragma pack(push, 1) // No padding between variables
@@ -603,6 +607,20 @@ typedef struct SettingsDataStruct {
   #if ENABLED(INPUT_SHAPING_Y)
     float shaping_y_frequency, // M593 Y F
           shaping_y_zeta;      // M593 Y D
+  #endif
+
+  //
+  // PMMMU
+  //
+  #if ENABLED(PRODMACH)
+    // int8_t    pmmmu_tool_index;
+    float     pmmmu_fixed_length;
+    float     pmmmu_purge_length;
+    float     pmmmu_forward_dist[TOOLS_COUNT];
+    float     pmmmu_backward_dist[TOOLS_COUNT];
+    // float     pmmmu_load_length[TOOLS_COUNT];
+    // float     pmmmu_unload_length[TOOLS_COUNT];
+    // int8_t    pmmmu_filament_backup[TOOLS_COUNT];
   #endif
 
 } SettingsData;
@@ -1656,6 +1674,20 @@ void MarlinSettings::postprocess() {
     #endif
 
     //
+    // PMMMU
+    //
+    #if ENABLED(PRODMACH)
+      // EEPROM_WRITE(pmmmu.ToolIndex);
+      EEPROM_WRITE(pmmmu.FixedLength);
+      EEPROM_WRITE(pmmmu.PurgeLength);
+      EEPROM_WRITE(pmmmu.ForwardDistance);
+      EEPROM_WRITE(pmmmu.BackwardDistance);
+      // EEPROM_WRITE(pmmmu.LoadLength);
+      // EEPROM_WRITE(pmmmu.UnloadLength);
+      // EEPROM_WRITE(pmmmu.FilamentBackup);
+    #endif
+
+    //
     // Report final CRC and Data Size
     //
     if (!eeprom_error) {
@@ -2657,6 +2689,31 @@ void MarlinSettings::postprocess() {
       }
       #endif
 
+      #if ENABLED(PRODMACH)
+      {
+        // int8_t _int_data;
+        // EEPROM_READ(_int_data);
+        // pmmmu.ToolIndex = _int_data;
+        float _f_arr[TOOLS_COUNT];
+        EEPROM_READ(_f_arr[0]);
+        pmmmu.FixedLength = _f_arr[0];
+        EEPROM_READ(_f_arr[0]);
+        pmmmu.PurgeLength = _f_arr[0];
+        EEPROM_READ(_f_arr);
+        memcpy(pmmmu.ForwardDistance, _f_arr, sizeof(pmmmu.ForwardDistance));
+        EEPROM_READ(_f_arr);
+        memcpy(pmmmu.BackwardDistance, _f_arr, sizeof(pmmmu.BackwardDistance));
+        // EEPROM_READ(_f_arr);
+        // memcpy(pmmmu.LoadLength, _f_arr, sizeof(pmmmu.LoadLength));
+        // EEPROM_READ(_f_arr);
+        // memcpy(pmmmu.UnloadLength, _f_arr, sizeof(pmmmu.UnloadLength));
+
+        // int8_t _int_arr[TOOLS_COUNT];
+        // EEPROM_READ(_int_arr);
+        // memcpy(pmmmu.FilamentBackup, _f_arr, sizeof(pmmmu.FilamentBackup));
+      }
+      #endif
+
       //
       // Validate Final Size and CRC
       //
@@ -3442,6 +3499,13 @@ void MarlinSettings::reset() {
       stepper.set_shaping_frequency(Y_AXIS, SHAPING_FREQ_Y);
       stepper.set_shaping_damping_ratio(Y_AXIS, SHAPING_ZETA_Y);
     #endif
+  #endif
+
+  //
+  // PMMMU
+  //
+  #if ENABLED(PRODMACH)
+    pmmmu.reset();
   #endif
 
   postprocess();

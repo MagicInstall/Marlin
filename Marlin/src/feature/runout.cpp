@@ -30,6 +30,10 @@
 
 #include "runout.h"
 
+#if ENABLED(PRODMACH)
+#include "mmu/pmmmu.h"
+#endif
+
 FilamentMonitor runout;
 
 bool FilamentMonitorBase::enabled = true,
@@ -127,7 +131,11 @@ void event_filament_runout(const uint8_t extruder) {
   #endif // HOST_ACTION_COMMANDS
 
   if (run_runout_script) {
-    #if MULTI_FILAMENT_SENSOR
+    #if ENABLED(PRODMACH)
+      char gcode[16];
+      sprintf(gcode, "T%d E%f", pmmmu.ToolIndex, BEFORE_PURGE_LENGTH);
+      queue.inject(gcode);
+    #elif MULTI_FILAMENT_SENSOR
       char script[strlen(FILAMENT_RUNOUT_SCRIPT) + 1];
       sprintf_P(script, PSTR(FILAMENT_RUNOUT_SCRIPT), tool);
       #if ENABLED(FILAMENT_RUNOUT_SENSOR_DEBUG)
@@ -139,7 +147,7 @@ void event_filament_runout(const uint8_t extruder) {
         SERIAL_ECHOPGM("Runout Command: ");
         SERIAL_ECHOLNPGM(FILAMENT_RUNOUT_SCRIPT);
       #endif
-      queue.inject(F(FILAMENT_RUNOUT_SCRIPT));
+      queue.inject(F(FILAMENT_RUNOUT_SCRIPT)); 
     #endif
   }
 }
